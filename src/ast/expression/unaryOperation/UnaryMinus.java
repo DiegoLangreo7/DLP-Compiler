@@ -1,4 +1,10 @@
 package ast.expression.unaryOperation;
 
-public class UnaryMinus {
+import ast.expression.Expression;
+
+public class UnaryMinus extends UnaryExpression {
+
+    public UnaryMinus(int line, int column, Expression operand) {
+        super(line, column, operand);
+    }
 }

@@ -1,4 +1,10 @@
 package ast.expression.unaryOperation;
 
-public class UnaryNot {
+import ast.expression.Expression;
+
+public class UnaryNot extends UnaryExpression {
+
+    public UnaryNot(int line, int column, Expression operand) {
+        super(line, column, operand);
+    }
 }

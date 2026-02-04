@@ -1,4 +1,10 @@
 package ast.expression.binaryOperation;
 
-public class Arithmetic {
+import ast.expression.Expression;
+
+public class Arithmetic extends BinaryExpression {
+
+    public Arithmetic(int line, int column, Expression left, String operator, Expression right) {
+        super(line, column, left, operator, right);
+    }
 }
