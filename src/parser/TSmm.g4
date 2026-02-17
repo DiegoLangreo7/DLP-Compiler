@@ -2,17 +2,54 @@ grammar TSmm;
 
 // ----- REGLAS SINTACTICAS ------
 
-program: expression* EOF
+program: ( variableDefinition | functionDefinition )* mainFunction EOF
        ;
+
+variableDefinition: 'let' ID ( ',' ID )* ':' type ';'
+                  ;
+
+functionDefinition: 'function' ID '(' ( ID ':' type ( ',' ID ':' type)* )? ')' ':' type '{' variableDefinition* statement* '}'
+                  ;
+
+mainFunction: 'function' 'main' '(' ')' ':' 'void' '{' variableDefinition* statement* '}'
+                  ;
+
+type: 'int'
+    | 'number'
+    | 'char'
+    | 'void'
+    | '[' INT_CONSTANT ']' type
+    | '[' variableDefinition+ ']'
+    ;
+
+statement: 'log' expression ( ',' expression )* ';'
+         | 'input' expression ( ',' expression )* ';'
+         | expression '=' expression ';'
+         | 'if' '(' expression ')' body ( 'else' body )?
+         | 'while' '(' expression ')' body
+         | 'return' expression ';'
+         | ID '(' ( expression ( ',' expression )* )? ')' ';'
+         ;
+
+body: '{' statement* '}'
+    | statement
+    ;
 
 expression: ID
           | INT_CONSTANT
           | REAL_CONSTANT
           | CHAR_CONSTANT
+          | ID '(' ( expression ( ',' expression )* )? ')'
           | '(' expression ')'
           | expression '[' expression ']'
-          |
-          | expression ('+' | '-' | '*' | '/' ) expression
+          | expression '.' ID
+          | '(' expression 'as' type ')'
+          | '-' expression
+          | '!' expression
+          | expression ('*' | '/' | '%' ) expression
+          | expression ( '+' | '-' ) expression
+          | expression ( '>' | '>=' | '>' | '>=' | '<' | '<=' | '!=' | '==' ) expression
+          | expression ( '&&' | '||' ) expression
           ;
 
 // ----- REGLAS LEXICAS ------
