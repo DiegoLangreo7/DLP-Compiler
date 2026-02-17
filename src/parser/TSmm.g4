@@ -2,8 +2,18 @@ grammar TSmm;
 
 // ----- REGLAS SINTACTICAS ------
 
-program: ( ID | INT_CONSTANT | REAL_CONSTANT | CHAR_CONSTANT)* EOF
+program: expression* EOF
        ;
+
+expression: ID
+          | INT_CONSTANT
+          | REAL_CONSTANT
+          | CHAR_CONSTANT
+          | '(' expression ')'
+          | expression '[' expression ']'
+          |
+          | expression ('+' | '-' | '*' | '/' ) expression
+          ;
 
 // ----- REGLAS LEXICAS ------
 
