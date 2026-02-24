@@ -4,11 +4,11 @@ import ast.Definition.Definition;
 
 import java.util.List;
 
-public class program implements ASTNode {
+public class Program implements ASTNode {
 
     private List<Definition> definitions;
 
-    public program(List<Definition> definitions) {
+    public Program(List<Definition> definitions) {
         this.definitions = definitions;
     }
 
