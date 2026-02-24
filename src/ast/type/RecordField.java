@@ -17,4 +17,8 @@ public class RecordField {
     public Type getFieldType() {
         return fieldType;
     }
+
+        public String toString() {
+        	return fieldName+": "+fieldType;
+        }
 }

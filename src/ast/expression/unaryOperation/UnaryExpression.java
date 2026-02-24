@@ -15,4 +15,9 @@ public abstract class UnaryExpression extends AbstractLocatable implements Expre
     public Expression getOperand() {
         return operand;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "(" + operand + ")";
+    }
 }

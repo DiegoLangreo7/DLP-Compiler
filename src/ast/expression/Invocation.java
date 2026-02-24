@@ -23,4 +23,18 @@ public class Invocation extends AbstractLocatable implements Expression, Stateme
     public Variable getFuncName() {
         return funcName;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(funcName).append("(");
+        for (int i = 0; i < arguments.size(); i++) {
+            sb.append(arguments.get(i));
+            if (i < arguments.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

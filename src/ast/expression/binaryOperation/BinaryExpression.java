@@ -28,4 +28,9 @@ public abstract class BinaryExpression extends AbstractLocatable implements Expr
             return operator;
     }
 
+    @Override
+    public String toString() {
+        return "(" + left + " " + operator + " " + right + ")";
+    }
+
 }

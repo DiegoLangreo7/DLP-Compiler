@@ -1,7 +1,8 @@
 package ast.type;
 
-import ast.definition.VariableDefinition;
+import ast.definition.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecordType implements Type{
@@ -9,6 +10,7 @@ public class RecordType implements Type{
     private List<RecordField> fields;
 
     public RecordType( List<VariableDefinition> fields) {
+        this.fields = new ArrayList<>();
         for(VariableDefinition vD : fields){
             this.fields.add(toField(vD));
         }
@@ -21,5 +23,18 @@ public class RecordType implements Type{
     public List<RecordField> getFields() {
         return fields;
     }
+
+        public String toString() {
+        	StringBuilder sb = new StringBuilder();
+        	sb.append("record {");
+        	for (int i = 0; i < fields.size(); i++) {
+        		sb.append(fields.get(i));
+        		if (i < fields.size() - 1) {
+        			sb.append(", ");
+        		}
+        	}
+        	sb.append("}");
+        	return sb.toString();
+        }
 
 }

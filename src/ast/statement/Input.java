@@ -16,4 +16,9 @@ public class Input extends AbstractLocatable implements Statement {
         return parameter;
     }
 
+    @Override
+    public String toString() {
+        return "input " + parameter + ";";
+    }
+
 }

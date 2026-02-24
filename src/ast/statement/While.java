@@ -23,4 +23,15 @@ public class While extends AbstractLocatable implements Statement {
     public List<Statement> getWhileBody() {
         return whileBody;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("while (").append(condition).append(") {\n");
+        for (Statement stmt : whileBody) {
+            sb.append("  ").append(stmt).append("\n");
+        }
+        sb.append("}");
+        return sb.toString();
+    }
 }

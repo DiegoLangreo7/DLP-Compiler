@@ -20,4 +20,9 @@ public class FieldAccess extends AbstractLocatable implements Expression{
     public String getFieldAccess() {
         return fieldAccess;
     }
+
+    @Override
+    public String toString() {
+        return structureExpression + "." + fieldAccess;
+    }
 }

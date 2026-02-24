@@ -14,4 +14,9 @@ public class NumberLiteral extends AbstractLocatable implements Expression {
     public double getValue() {
         return this.value;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

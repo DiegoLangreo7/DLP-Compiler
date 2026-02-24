@@ -18,4 +18,8 @@ public class ArrayType implements Type{
         return typeOf;
     }
 
+    public String toString() {
+    	return "array["+size+"] of "+typeOf;
+    }
+
 }

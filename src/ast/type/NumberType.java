@@ -13,4 +13,8 @@ public class NumberType implements Type {
         return instance;
     }
 
+    public String toString() {
+    	return "number";
+    }
+
 }

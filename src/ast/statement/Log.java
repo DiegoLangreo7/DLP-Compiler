@@ -15,4 +15,9 @@ public class Log extends AbstractLocatable implements Statement {
     public Expression getParameter() {
         return parameter;
     }
+
+    @Override
+    public String toString() {
+        return "log " + parameter + ";";
+    }
 }

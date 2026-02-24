@@ -7,13 +7,22 @@ import java.util.List;
 
 public class FunctionDefinition extends AbstractDefinition {
 
-    private List<VariableDefinition> varDefinitions;
-    private List<Statement> statements;
+    private List<Statement> funcBody;
 
-    public FunctionDefinition(int line, int column, String name, Type type, List<VariableDefinition> varDefinitions, List<Statement> statements) {
+    public FunctionDefinition(int line, int column, String name, Type type, List<Statement> funcBody) {
         super(line, column,name, type);
-        this.varDefinitions = varDefinitions;
-        this.statements = statements;
+        this.funcBody = funcBody;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName()).append(": ").append(getType()).append(" {\n");
+        for (Statement stmt : funcBody) {
+            sb.append("  ").append(stmt).append("\n");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 
 }

@@ -21,4 +21,9 @@ public class Cast extends AbstractLocatable implements Expression {
     public Type getCastType() {
         return castType;
     }
+
+    @Override
+    public String toString() {
+        return "(" + operand + " as " + castType + ")";
+    }
 }

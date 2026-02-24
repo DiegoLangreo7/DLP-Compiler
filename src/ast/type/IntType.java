@@ -13,4 +13,8 @@ public class IntType implements Type {
         return instance;
     }
 
+    public String toString() {
+    	return "int";
+    }
+
 }

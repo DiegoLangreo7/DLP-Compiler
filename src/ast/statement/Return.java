@@ -15,4 +15,9 @@ public class Return extends AbstractLocatable implements Statement {
     public Expression getReturnValue() {
         return returnValue;
     }
+
+    @Override
+    public String toString() {
+        return "return " + returnValue + ";";
+    }
 }

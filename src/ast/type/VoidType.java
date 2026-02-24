@@ -12,4 +12,9 @@ public class VoidType implements Type {
         }
         return instance;
     }
+
+    @Override
+    public String toString() {
+        return "void";
+    }
 }

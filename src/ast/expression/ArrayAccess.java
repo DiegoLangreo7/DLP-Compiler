@@ -20,4 +20,9 @@ public class ArrayAccess extends AbstractLocatable implements Expression {
     public Expression getIndex() {
         return index;
     }
+
+    @Override
+    public String toString() {
+        return arrayExpression + "[" + index + "]";
+    }
 }

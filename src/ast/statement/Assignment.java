@@ -22,5 +22,9 @@ public class Assignment extends AbstractLocatable implements Statement {
         return rigth;
     }
 
+    @Override
+    public String toString() {
+        return left + " = " + rigth + ";";
+    }
 
 }

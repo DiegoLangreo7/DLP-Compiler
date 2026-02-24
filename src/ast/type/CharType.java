@@ -13,6 +13,8 @@ public class CharType implements Type {
         return instance;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "char";
+    }
 }

@@ -29,4 +29,22 @@ public class IfElse extends AbstractLocatable implements Statement {
     public List<Statement> getElseBranch() {
         return elsePart;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("if (").append(condition).append(") {\n");
+        for (Statement stmt : thenPart) {
+            sb.append("  ").append(stmt).append("\n");
+        }
+        sb.append("}");
+        if (elsePart != null && !elsePart.isEmpty()) {
+            sb.append(" else {\n");
+            for (Statement stmt : elsePart) {
+                sb.append("  ").append(stmt).append("\n");
+            }
+            sb.append("}");
+        }
+        return sb.toString();
+    }
 }
