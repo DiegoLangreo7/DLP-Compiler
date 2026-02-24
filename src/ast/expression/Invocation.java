@@ -1,10 +1,11 @@
 package ast.expression;
 
 import ast.AbstractLocatable;
+import ast.statement.Statement;
 
 import java.util.List;
 
-public class Invocation extends AbstractLocatable implements Expression {
+public class Invocation extends AbstractLocatable implements Expression, Statement {
 
     private List<Expression> arguments;
     private Variable funcName;

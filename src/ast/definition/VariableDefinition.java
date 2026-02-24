@@ -1,4 +1,4 @@
-package ast.Definition;
+package ast.definition;
 
 import ast.type.Type;
 

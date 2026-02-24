@@ -5,9 +5,9 @@ import ast.AbstractLocatable;
 public class FieldAccess extends AbstractLocatable implements Expression{
 
     private Expression structureExpression;
-    private Expression fieldAccess;
+    private String fieldAccess;
 
-    public FieldAccess(int line, int column, Expression structureExpression, Expression fieldAccess) {
+    public FieldAccess(int line, int column, Expression structureExpression, String fieldAccess) {
         super(line, column);
         this.structureExpression = structureExpression;
         this.fieldAccess = fieldAccess;
@@ -17,7 +17,7 @@ public class FieldAccess extends AbstractLocatable implements Expression{
         return structureExpression;
     }
 
-    public Expression getFieldAccess() {
+    public String getFieldAccess() {
         return fieldAccess;
     }
 }
