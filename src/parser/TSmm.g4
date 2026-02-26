@@ -36,17 +36,27 @@ mainFunction  returns [FunctionDefinition ast] locals [List<VariableDefinition> 
     ;
 
 type returns [Type ast] locals [List<VariableDefinition> records = new ArrayList<VariableDefinition>()]:
-      'int'
-      { $ast = IntType.getInstance(); }
-    | 'number'
-      { $ast = NumberType.getInstance(); }
-    | 'char'
-      { $ast = CharType.getInstance(); }
+      simpleType
+      { $ast = $simpleType.ast; }
+
     | '[' INT = INT_CONSTANT ']' type
       { $ast = new ArrayType(LexerHelper.lexemeToInt($INT.text), $type.ast); }
+
     | '[' ( vd = variableDefinition {$records.addAll($vd.ast);} )+ ']'
       { $ast = new RecordType($records); }
     ;
+
+simpleType returns [Type ast]:
+    'int'
+    { $ast = IntType.getInstance(); }
+
+  | 'number'
+
+    { $ast = NumberType.getInstance(); }
+  | 'char'
+
+    { $ast = CharType.getInstance(); }
+  ;
 
 statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [List<Statement> else = new ArrayList<Statement>()]:
            FS = 'log' e1 = expression { $ast.add(new Log($FS.getLine(), $FS.getCharPositionInLine()+1,$e1.ast));} ( ',' el = expression { $ast.add(new Log($FS.getLine(), $FS.getCharPositionInLine()+1,$el.ast));})* ';'
@@ -104,8 +114,8 @@ expression returns [Expression ast] locals [List<Expression> params = new ArrayL
           | e1 = expression '.' ID // FieldAccess
             { $ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text); }
 
-          | FS = '(' e1 = expression 'as' type ')'  // Cast
-            { $ast = new Cast($FS.getLine(), $FS.getCharPositionInLine()+1, $e1.ast, $type.ast); }
+          | FS = '(' e1 = expression 'as' simpleType ')'  // Cast
+            { $ast = new Cast($FS.getLine(), $FS.getCharPositionInLine()+1, $e1.ast, $simpleType.ast); }
 
           | FS = '-' e1 = expression // UnaryMinus
             { $ast = new UnaryMinus($FS.getLine(), $FS.getCharPositionInLine()+1, $e1.ast); }

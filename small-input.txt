@@ -1,4 +1,8 @@
 function main(): void {
-    let a: int;
-    a = 5 + * 3;
+    let numero: int;
+    let arreglo: [5]int;
+
+    numero = 10;
+    // Error: el cast solo se permite hacia tipos simples (int, number, char)
+    arreglo = (numero as [5]int);
 }
