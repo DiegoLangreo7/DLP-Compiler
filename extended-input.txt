@@ -1,0 +1,91 @@
+// 1. Declaraciones globales con espacios irregulares, tabulaciones y saltos
+let    a,b,   c,      d,e:int;
+let f:    number;
+let g   , h :char;
+
+// 2. Matrices multidimensionales extremas
+let array1D: [100]int;
+let array2D: [10][20]number;
+let array3D: [5][5][5]char;
+let arrayMasivo: [2][2][2][2][2][2][2]int;
+
+// 3. Registros con multiples campos
+let jugador: [
+    let id: int;
+    let x, y, z: number;
+    let categoria: char;
+    let mochila: [50]int;
+];
+
+// 4. Funciones vacias y comentarios pegados
+function procVacio():void{}//Comentario pegado a la llave
+
+// 5. Funcion con logica compleja y operadores matematicos
+function matematicas(base: int, factor: number): number {
+    // TODAS las variables declaradas al inicio
+    let r1, r2, r3: number;
+    let b1: int;
+
+    // INICIO de las sentencias
+    // Prueba de menos unario vs menos binario y precedencia
+    r1 = -base - -5;
+    r2 = (base * -2) / 3 % 2;
+    r3 = r1 + r2 - base * 2.54;
+
+    // Castings multiples anidados
+    b1 = (((base as number) + 1.5) as int);
+
+    return r3;
+}
+
+// 6. Funcion principal obligatoria
+function main(): void {
+    // TODAS las variables declaradas al inicio (cumpliendo la especificacion)
+    let i, j, k: int;
+    let f1, f2: number;
+    let c1, c2, c3: char;
+    let salto, tab: char;
+
+    // INICIO de las sentencias
+    // Literales al limite (enteros grandes, decimales largos)
+    i = 0;
+    j = 99999999;
+    f1 = 0.000000001;
+    f2 = 3.1415926535;
+
+    // Caracteres (incluyendo el espacio en blanco y escapes)
+    c1 = 'a';
+    c2 = 'Z';
+    c3 = ' ';
+    salto = '\n';
+    tab = '\t';
+
+    // STRESS TEST 1: Condicionales y bucles pegados (cero espacios)
+    while(i<10)i=i+1;
+    if(i==10){j=0;}else{j=1;}
+
+    // STRESS TEST 2: Operadores logicos y relacionales combinados
+    if(!(f1!=f2)&&(i>=j||k<=0)||j>100&&j<200){
+        log 'E','r','r','o','r','\n';
+    }
+
+    // STRESS TEST 3: Anidamiento de condicionales de una sola linea sin llaves
+    while(i>0)
+        if(i%2==0)
+            while(j>0)
+                j=j-1;
+        else
+            log 'I','m','p','a','r',salto;
+
+    // Entradas y salidas masivas separadas por comas
+    input i, j, k, f1, f2, jugador.id;
+    log i, tab, j, salto, (f1+f2 as int), salto;
+
+    // STRESS TEST 4: Acceso profundo y concatenado
+    array1D[(i+j)*2] = 10;
+    array3D[0][1][2] = 'X';
+    jugador.mochila[array1D[0]] = (matematicas(jugador.id, f1) as int);
+
+    // STRESS TEST 5: To do junto en una sola linea
+    jugador.x=jugador.y+jugador.z*(i as number)/-f1;if(jugador.categoria=='A'){procVacio();}
+}

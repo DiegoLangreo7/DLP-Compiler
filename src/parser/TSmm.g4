@@ -25,9 +25,9 @@ variableDefinition returns [List<VariableDefinition> ast = new ArrayList<Variabl
      { for (String varName : $varNames) { $ast.add(new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, varName, $type.ast)); } }
     ;
 
-functionDefinition returns [FunctionDefinition ast] locals [List<VariableDefinition> params = new ArrayList<VariableDefinition>(), List<Statement> funcBody = new ArrayList<Statement>()]:
-    FS = 'function' FUNCNAME = ID '(' ( ID1 = ID ':' t1 = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$ID1.text, $t1.ast));} ( ',' IDL = ID ':' tl = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$IDL.text, $tl.ast));})* )? ')' ':' returnType = type '{' (variableDefinition { $funcBody.addAll($variableDefinition.ast);})* ( statement { $funcBody.addAll($statement.ast); })* '}'
-    { $ast = new FunctionDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, $FUNCNAME.text, new FunctionType($returnType.ast, $params ), $funcBody); }
+functionDefinition returns [FunctionDefinition ast] locals [List<VariableDefinition> params = new ArrayList<VariableDefinition>(), List<Statement> funcBody = new ArrayList<Statement>(), Type returnType]:
+    FS = 'function' FUNCNAME = ID '(' ( ID1 = ID ':' t1 = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$ID1.text, $t1.ast));} ( ',' IDL = ID ':' tl = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$IDL.text, $tl.ast));})* )? ')' ':' ( (rType = type {$returnType = $rType.ast;}) | 'void' {$returnType = VoidType.getInstance();}) '{' (variableDefinition { $funcBody.addAll($variableDefinition.ast);})* ( statement { $funcBody.addAll($statement.ast); })* '}'
+    { $ast = new FunctionDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, $FUNCNAME.text, new FunctionType($returnType, $params ), $funcBody); }
     ;
 
 mainFunction  returns [FunctionDefinition ast] locals [List<VariableDefinition> params = new ArrayList<VariableDefinition>(), List<Statement> funcBody = new ArrayList<Statement>()]:
@@ -42,8 +42,6 @@ type returns [Type ast] locals [List<VariableDefinition> records = new ArrayList
       { $ast = NumberType.getInstance(); }
     | 'char'
       { $ast = CharType.getInstance(); }
-    | 'void'
-      { $ast = VoidType.getInstance(); }
     | '[' INT = INT_CONSTANT ']' type
       { $ast = new ArrayType(LexerHelper.lexemeToInt($INT.text), $type.ast); }
     | '[' ( vd = variableDefinition {$records.addAll($vd.ast);} )+ ']'

@@ -1,1 +1,4 @@
-123 + x
+function main(): void {
+    let a: int;
+    a = 5 + * 3;
+}

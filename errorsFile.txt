@@ -1,0 +1,314 @@
+====================================================================
+BATERIA DE PRUEBAS NEGATIVAS (ERRORES) PARA ANALIZADOR LEXICO/SINTACTICO
+====================================================================
+INSTRUCCIONES:
+Cada bloque separado por "---" es un programa independiente que 
+debe fallar (lanzar error léxico o sintáctico).
+Usa [x] para marcar los que ya han sido comprobados exitosamente.
+
+// TEST 1: Tipo `void` en variables (No permitido en tipos simples)
+// ESTADO: [x] Comprobado
+let i, j: void;
+---
+
+// TEST 2: Declaracion despues de sentencia
+// ESTADO: [x] Comprobado
+function main(): void {
+    a = b;
+    let c: int;
+}
+---
+
+// TEST 3: Sentencia fuera de una funcion
+// ESTADO: [x] Comprobado
+input a, b;
+---
+
+// TEST 4: Programa sin funcion main y sintaxis completamente invalida
+// ESTADO: [x] Comprobado
+input sin main
+---
+
+// TEST 5: Sentencia `if` global / fuera de funcion
+// ESTADO: [ ] No comprobado
+if(100)
+    a = 2;
+---
+
+// TEST 6: Declaracion de array con espacios (Sintacticamente valido o invalido segun tu gramatica estricta)
+// ESTADO: [x] Comprobado
+let vector : [10][5] int;
+---
+
+// TEST 7: Error lexico - Simbolo no reconocido (@)
+// ESTADO: [x] Comprobado
+function main(): void {
+    let @variable: int;
+}
+---
+
+// TEST 8: Error lexico - Numero real mal formado (dos puntos decimales)
+// ESTADO: [x] Comprobado
+function main(): void {
+    let a: number;
+    a = 3.14.15;
+}
+---
+
+// TEST 9: Error lexico - Caracter literal sin cerrar
+// ESTADO: [x] Comprobado
+function main(): void {
+    let c: char;
+    c = 'a;
+}
+---
+
+// TEST 10: La funcion main no es la ultima
+// ESTADO: [x] comprobado
+function main(): void {}
+function otraFuncion(): void {}
+---
+
+// TEST 11: Error lexico - Identificador empieza por numero
+// ESTADO: [x] comprobado
+function main(): void {
+    let 1variable: int;
+}
+---
+
+// TEST 12: Falta coma entre identificadores en declaracion
+// ESTADO: [x] comprobado
+let a b: int;
+function main(): void {}
+---
+
+// TEST 13: Falta dos puntos antes del tipo
+// ESTADO: [x] comprobado
+let a int;
+function main(): void {}
+---
+
+// TEST 14: Falta punto y coma en declaracion global
+// ESTADO: [x] comprobado
+let a: int
+function main(): void {}
+---
+
+// TEST 15: Tipo de dato inexistente (float en lugar de number)
+// ESTADO: [x] comprobado
+let a: float;
+function main(): void {}
+---
+
+// TEST 16: Coma extra en declaracion de variables
+// ESTADO: [x] comprobado
+let a, , b: int;
+function main(): void {}
+---
+
+// TEST 17: Falta palabra reservada 'let' en declaracion global
+// ESTADO: [x] comprobado
+a, b: int;
+function main(): void {}
+---
+
+// TEST 18: Falta la funcion main por completo
+// ESTADO: [x] comprobado
+let a: int;
+function hacerAlgo(): void {}
+---
+
+// TEST 19: main devuelve un tipo distinto a void
+// ESTADO: [x] comprobado
+function main(): int {
+    return 0;
+}
+---
+
+// TEST 20: main recibe parametros (la especificacion dice que no recibe nada)
+// ESTADO: [x] comprobado
+function main(argc: int): void {}
+---
+
+// TEST 21: Parametros mal declarados (falta el tipo de 'a')
+// ESTADO: [x] comprobado
+function suma(a, b: int): int { return a + b; }
+function main(): void {}
+---
+
+// TEST 22: Array sin tamaño especificado
+// ESTADO: [x] comprobado
+let arreglo: []int;
+function main(): void {}
+---
+
+// TEST 23: Tamaño del array no es un entero (es real)
+// ESTADO: [x] comprobado
+let arreglo: [5.5]int;
+function main(): void {}
+---
+
+// TEST 24: Registro sin la palabra reservada 'let' en sus campos
+// ESTADO: [x] comprobado
+let persona: [
+    edad: int; 
+];
+function main(): void {}
+---
+
+// TEST 25: Corchete sin cerrar en declaracion de array
+// ESTADO: [x] comprobado
+let arreglo: [10 int;
+function main(): void {}
+---
+
+// TEST 26: Falta punto y coma en asignacion
+// ESTADO: [x] comprobado
+function main(): void {
+    let a: int;
+    a = 5
+}
+---
+
+// TEST 27: Sentencia log vacia
+// ESTADO: [x] comprobado
+function main(): void {
+    log ;
+}
+---
+
+// TEST 28: if sin parentesis en la condicion
+// ESTADO: [x] comprobado
+function main(): void {
+    let a: int;
+    a = 1;
+    if a > 0 { log a; }
+}
+---
+
+// TEST 29: while sin parentesis en la condicion
+// ESTADO: [x] comprobado
+function main(): void {
+    let a: int;
+    a = 1;
+    while a > 0 { a = a - 1; }
+}
+---
+
+// TEST 30: Cast mal formado (faltan parentesis exteriores obligatorios)
+// ESTADO: [x] comprobado
+function main(): void {
+    let a: int;
+    let b: number;
+    b = 3.14;
+    a = b as int; 
+}
+---
+
+// TEST 31: Caracter vacio (debe tener algo adentro o escapar)
+// ESTADO: [x] comprobado
+function main(): void {
+    let c: char;
+    c = '';
+}
+---
+
+// TEST 32: Caracter con mas de un simbolo
+// ESTADO: [x] comprobado
+function main(): void {
+    let c: char;
+    c = 'abc';
+}
+---
+
+// TEST 33: log sin comas separando expresiones
+// ESTADO: [x] comprobado
+function main(): void {
+    log 1 2 3;
+}
+---
+
+// TEST 34: input sin comas separando variables
+// ESTADO: [x] comprobado
+function main(): void {
+    let a, b: int;
+    input a b;
+}
+---
+
+// TEST 35: Operador invalido (potencia ** no existe en especificacion)
+// ESTADO: [x] comprobado
+function main(): void {
+    let a: int;
+    a = 2 ** 3;
+}
+---
+
+// TEST 36: Asignacion dentro de expresion (Asignacion es sentencia, no expresion)
+// ESTADO: [x] comprobado
+function main(): void {
+    let a, b, c: int;
+    a = (b = c);
+}
+---
+
+// TEST 38: Palabra reservada usada como identificador
+// ESTADO: [x]  comprobado
+function main(): void {
+    let while: int;
+}
+---
+
+// TEST 39: Funciones anidadas (no permitido segun "secuencia de definiciones")
+// ESTADO: [x]  comprobado
+function main(): void {
+    function interna(): void {}
+}
+---
+
+// TEST 40: else sin un if previo
+// ESTADO: [x]  comprobado
+function main(): void {
+    let a: int;
+    a = 1;
+    else { a = 2; }
+}
+---
+
+// TEST 41: Condicion vacia en if
+// ESTADO: [x]  comprobado
+function main(): void {
+    if () { log 1; }
+}
+---
+
+// TEST 42: Condicion vacia en while
+// ESTADO: [x]  comprobado
+function main(): void {
+    while () { log 1; }
+}
+---
+
+// TEST 43: Asignacion a la invocacion de una funcion (l-value invalido)
+// ESTADO: [x]  comprobado
+function f(): int { return 1; }
+function main(): void {
+    f() = 5;
+}
+---
+
+// TEST 44: Parentesis sin cerrar en expresion matematica
+// ESTADO: [x]  comprobado
+function main(): void {
+    let a: int;
+    a = (1 + 2 * 3;
+}
+---
+
+// TEST 45: Operador unario mal aplicado o concatenado de forma invalida
+// ESTADO: [x]  comprobado
+function main(): void {
+    let a: int;
+    a = 5 + * 3;
+}
+---
