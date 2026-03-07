@@ -63,9 +63,6 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
 
          | FS = 'input' e1 = expression { $ast.add(new Input($FS.getLine(), $FS.getCharPositionInLine()+1,$e1.ast));}( ',' el = expression { $ast.add(new Input($FS.getLine(), $FS.getCharPositionInLine()+1,$el.ast));} )* ';'
 
-         | e1 = expression '=' e2 = expression ';'
-           { $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
-
          | FS = 'if' '(' expression ')' thenPart = body ( 'else' elsePart = body { $else = $elsePart.ast; })?
            { $ast.add(new IfElse($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast, $thenPart.ast, $else)); }
 
@@ -77,6 +74,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
 
          | invocation ';'
            { $ast.add($invocation.ast); }
+
+         | e1 = expression '=' e2 = expression ';'
+           { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
          ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
