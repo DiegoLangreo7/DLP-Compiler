@@ -15,6 +15,10 @@ public class FunctionDefinition extends AbstractDefinition {
         this.funcBody = funcBody;
     }
 
+    public List<Statement> getFuncBody() {
+        return funcBody;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

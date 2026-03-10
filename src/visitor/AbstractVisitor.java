@@ -25,6 +25,8 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
     @Override
     public TR visit(FunctionDefinition e, TP param) {
         e.getType().accept(this,param);
+        for(Statement statement : e.getFuncBody())
+            statement.accept(this,param);
         return null;
     }
 
@@ -88,7 +90,7 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
 
     @Override
     public TR visit(FieldAccess e, TP param) {
-        e.accept(this,param);
+        e.getStructureExpression().accept(this,param);
         return null;
     }
 

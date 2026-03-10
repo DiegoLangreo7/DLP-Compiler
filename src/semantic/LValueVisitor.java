@@ -69,7 +69,7 @@ public class LValueVisitor extends AbstractVisitor<Void,Void> {
 
     @Override
     public Void visit(FieldAccess e, Void param) {
-        e.accept(this,param);
+        e.getStructureExpression().accept(this,param);
         e.setLValue(true);
         return null;
     }
