@@ -202,6 +202,8 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
 
     @Override
     public TR visit(RecordType e, TP param) {
+        for(RecordField field : e.getFields())
+            field.accept(this,param);
         return null;
     }
 
