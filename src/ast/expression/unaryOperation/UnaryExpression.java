@@ -1,9 +1,9 @@
 package ast.expression.unaryOperation;
 
-import ast.AbstractLocatable;
+import ast.expression.AbstractExpression;
 import ast.expression.Expression;
 
-public abstract class UnaryExpression extends AbstractLocatable implements Expression {
+public abstract class UnaryExpression extends AbstractExpression {
 
     private Expression operand;
 

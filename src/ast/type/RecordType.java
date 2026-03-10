@@ -1,6 +1,7 @@
 package ast.type;
 
 import ast.definition.*;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +38,8 @@ public class RecordType implements Type{
         	return sb.toString();
         }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 }

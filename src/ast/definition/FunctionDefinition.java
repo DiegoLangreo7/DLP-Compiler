@@ -2,6 +2,7 @@ package ast.definition;
 
 import ast.statement.Statement;
 import ast.type.Type;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class FunctionDefinition extends AbstractDefinition {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 
 }

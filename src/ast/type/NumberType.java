@@ -1,5 +1,7 @@
 package ast.type;
 
+import visitor.Visitor;
+
 public class NumberType implements Type {
 
     private static NumberType instance;
@@ -17,4 +19,8 @@ public class NumberType implements Type {
     	return "number";
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return null;
+    }
 }

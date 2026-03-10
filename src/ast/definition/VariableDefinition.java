@@ -2,6 +2,7 @@ package ast.definition;
 
 import ast.statement.Statement;
 import ast.type.Type;
+import visitor.Visitor;
 
 public class VariableDefinition extends AbstractDefinition implements Statement {
 
@@ -13,4 +14,10 @@ public class VariableDefinition extends AbstractDefinition implements Statement 
     public String toString() {
         return getName() + ": " + getType() + ";";
     }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
+
 }

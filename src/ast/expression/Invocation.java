@@ -1,11 +1,11 @@
 package ast.expression;
 
-import ast.AbstractLocatable;
 import ast.statement.Statement;
+import visitor.Visitor;
 
 import java.util.List;
 
-public class Invocation extends AbstractLocatable implements Expression, Statement {
+public class Invocation extends AbstractExpression implements Statement {
 
     private List<Expression> arguments;
     private Variable funcName;
@@ -37,4 +37,10 @@ public class Invocation extends AbstractLocatable implements Expression, Stateme
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
+
 }

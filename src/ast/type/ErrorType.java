@@ -1,6 +1,7 @@
 package ast.type;
 
 import ast.Locatable;
+import visitor.Visitor;
 
 public class ErrorType implements Type {
 
@@ -19,4 +20,8 @@ public class ErrorType implements Type {
         return "Exception in thread main : '" + location + "' at line " + location;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 }

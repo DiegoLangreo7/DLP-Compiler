@@ -2,6 +2,7 @@ package ast.type;
 
 import ast.definition.VariableDefinition;
 import ast.expression.Variable;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -39,4 +40,8 @@ public class FunctionType implements Type {
         return sb.toString();
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 }

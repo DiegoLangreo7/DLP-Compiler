@@ -2,6 +2,7 @@ package ast;
 
 import ast.definition.Definition;
 import ast.definition.VariableDefinition;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,10 @@ public class Program implements ASTNode {
         this.definitions.addAll(definitions);
     }
 
+    public List<Definition> getDefinitions() {
+        return definitions;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -27,5 +32,10 @@ public class Program implements ASTNode {
             }
         }
         return sb.toString();
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this,param);
     }
 }

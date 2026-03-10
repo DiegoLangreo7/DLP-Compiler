@@ -1,9 +1,9 @@
 package ast.expression.binaryOperation;
 
-import ast.AbstractLocatable;
+import ast.expression.AbstractExpression;
 import ast.expression.Expression;
 
-public abstract class BinaryExpression extends AbstractLocatable implements Expression {
+public abstract class BinaryExpression extends AbstractExpression {
 
     private Expression right;
     private Expression left;

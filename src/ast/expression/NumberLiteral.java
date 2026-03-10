@@ -1,8 +1,8 @@
 package ast.expression;
 
-import ast.AbstractLocatable;
+import visitor.Visitor;
 
-public class NumberLiteral extends AbstractLocatable implements Expression {
+public class NumberLiteral extends AbstractExpression {
 
     private double value;
 
@@ -19,4 +19,10 @@ public class NumberLiteral extends AbstractLocatable implements Expression {
     public String toString() {
         return String.valueOf(value);
     }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
+
 }
