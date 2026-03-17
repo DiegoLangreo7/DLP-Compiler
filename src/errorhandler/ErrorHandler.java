@@ -28,7 +28,8 @@ public class ErrorHandler {
     }
 
     public void showErrors(PrintStream printStream){
-        printStream.print(errors);
+        for(ErrorType error : errors)
+            printStream.println(error);
     }
 
     public void addError(ErrorType error){

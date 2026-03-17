@@ -3,9 +3,23 @@ package semantic;
 import ast.expression.*;
 import ast.expression.binaryOperation.*;
 import ast.expression.unaryOperation.*;
+import ast.statement.Assignment;
+import ast.type.ErrorType;
+import errorhandler.ErrorHandler;
 import visitor.AbstractVisitor;
 
 public class LValueVisitor extends AbstractVisitor<Void,Void> {
+
+    @Override
+    public Void visit(Assignment e, Void param) {
+        e.getLeft().accept(this,param);
+        e.getRigth().accept(this,param);
+        if(!e.getLeft().getLValue()){
+            ErrorHandler.getInstance().addError(new ErrorType("The left side of an assignment must be an lvalue", e));
+        }
+
+        return null;
+    }
 
     @Override
     public Void visit(Arithmetic e, Void param) {
