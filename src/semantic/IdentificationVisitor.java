@@ -21,7 +21,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
     @Override
     public Void visit(FunctionDefinition e, Void param) {
         if(!st.insert(e)){
-            ErrorHandler.getInstance().addError(new ErrorType("Function '" + e.getName() + "' already defined", e));
+            ErrorHandler.getInstance().addError(new ErrorType("Function '" + e.getName() + "' is already defined", e));
         }
         st.set();
         e.getType().accept(this,param);
