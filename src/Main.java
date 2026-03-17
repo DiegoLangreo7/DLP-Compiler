@@ -5,6 +5,7 @@ import ast.ASTNode;
 import errorhandler.ErrorHandler;
 import parser.TSmmLexer;
 import parser.TSmmParser;
+import semantic.IdentificationVisitor;
 import semantic.LValueVisitor;
 import semantic.TypeCheckingVisitor;
 import visitor.Visitor;
@@ -29,6 +30,9 @@ public class Main {
 		Visitor<Void,Void> lValueVisitor = new LValueVisitor();
 		//lValueVisitor.visit(ast);	  //Incorrect use of the Visitor pattern, Fix it!
 		ast.accept(lValueVisitor,null);
+
+		Visitor<Void,Void> identificationVisitor = new IdentificationVisitor();
+		ast.accept(identificationVisitor,null);
 
 		// * Check errors
 		if(ErrorHandler.getInstance().anyError()){

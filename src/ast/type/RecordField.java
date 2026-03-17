@@ -1,13 +1,15 @@
 package ast.type;
 
+import ast.AbstractLocatable;
 import visitor.Visitor;
 
-public class RecordField {
+public class RecordField extends AbstractLocatable {
 
     private String fieldName;
     private Type fieldType;
 
-    public RecordField(String fieldName, Type fieldType) {
+    public RecordField(int line, int column, String fieldName, Type fieldType) {
+        super(line,column);
         this.fieldName = fieldName;
         this.fieldType = fieldType;
     }

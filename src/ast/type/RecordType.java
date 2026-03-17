@@ -18,7 +18,7 @@ public class RecordType implements Type{
     }
 
     private RecordField toField(VariableDefinition vD) {
-        return new RecordField( vD.getName(), vD.getType());
+        return new RecordField(vD.getLine(), vD.getColumn(), vD.getName(), vD.getType());
     }
 
     public List<RecordField> getFields() {
