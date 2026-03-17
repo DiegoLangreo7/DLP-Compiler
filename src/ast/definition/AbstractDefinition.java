@@ -7,6 +7,7 @@ public abstract class AbstractDefinition extends AbstractLocatable implements De
 
     private String name;
     private Type type;
+    private int scope;
 
     public AbstractDefinition(int line, int column, String name, Type type) {
         super(line,column);
@@ -20,6 +21,14 @@ public abstract class AbstractDefinition extends AbstractLocatable implements De
 
     public Type getType() {
         return type;
+    }
+
+    public void setScope(int scope) {
+        this.scope = scope;
+    }
+
+    public int getScope() {
+        return this.scope;
     }
 
 
