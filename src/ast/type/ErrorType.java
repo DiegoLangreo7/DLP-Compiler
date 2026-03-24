@@ -17,7 +17,7 @@ public class ErrorType implements Type {
 
     @Override
     public String toString() {
-        return "Exception in thread main : '" + message + "' at line " + location.getLine() + " and column " + location.getColumn();
+        return "Exception in thread main: " + message + " at line " + location.getLine() + " and column " + location.getColumn();
     }
 
     @Override

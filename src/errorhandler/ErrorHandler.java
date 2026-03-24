@@ -27,9 +27,12 @@ public class ErrorHandler {
         return !this.errors.isEmpty();
     }
 
-    public void showErrors(PrintStream printStream){
-        for(ErrorType error : errors)
-            printStream.println(error);
+    public void showErrors(PrintStream printStream) {
+        int index = 1;
+        for (ErrorType error : errors) {
+            printStream.println("[" + index + "] " + error.toString());
+            index++;
+        }
     }
 
     public void addError(ErrorType error){

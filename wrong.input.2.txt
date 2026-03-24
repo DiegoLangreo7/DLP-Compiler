@@ -1,10 +1,10 @@
 let date: [ 
  let day:int;
  let month:int;
- let day:number;		// Error 1
+ let day:number;		// Error 1 -> campo de struct repetido
 ];
 
 function main(): void {
-  input date.year;	// Error 2
+  input date.year;	// Error 2 -> campo no existente (NO es un error de identificación, los recordfield no usan la tabla de símbolos). Es un error de tipo y no de nombre.
 }
 

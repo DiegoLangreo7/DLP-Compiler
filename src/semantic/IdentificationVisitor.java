@@ -46,7 +46,9 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
         if(st.find(e.getName())!=null){
             e.setDefinition(st.find(e.getName()));
         }else{
-            ErrorHandler.getInstance().addError(new ErrorType("Variable '" + e.getName() + "' isn't defined", e));
+            ErrorType error = new ErrorType("Variable '" + e.getName() + "' isn't defined", e);
+            e.setDefinition(new VariableDefinition(e.getLine(),e.getColumn(),e.getName(),error));
+            ErrorHandler.getInstance().addError(error);
         }
         return null;
     }

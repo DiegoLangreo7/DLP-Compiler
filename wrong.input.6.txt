@@ -6,7 +6,7 @@ function f(): void{
 }
 
 function main(): void {
-  a1 = a2;		// Error 1
-  log a1;		// Error 2
-  log f();		// Error 3
+  a1 = a2;		// Error 1 -> tipo array no promociona al tipo array
+  log a1;		// Error 2 -> se requiere un tipo simple y obtuve un tipo array
+  log f();		// Error 3 -> se requiere un tipo simple y obtuve un tipo void
 }

@@ -7,9 +7,9 @@ let a:[
 ];
 
 function main(): void {
-  log i && f; 			// Error 1
-  log a >= 3; 			// Error 2
-  while (f)     		// Error 3
-    if (f)      		// Error 4
-      log !f;   		// Error 5
+  log i && f; 			// Error 1 -> tipo number no soporta la operación lógica (int == boleano)
+  log a >= 3; 			// Error 2 -> tipo struct no es comparable a tipo int
+  while (f)     		// Error 3 -> tipo number puede ser usado como condición
+    if (f)      		// Error 4 -> " " " " " " " "
+      log !f;   		// Error 5 -> tipo number no soporta la operación lógica unaria.
 }
