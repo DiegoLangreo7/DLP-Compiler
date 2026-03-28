@@ -1,12 +1,13 @@
 package ast.type;
 
+import ast.Locatable;
 import ast.definition.VariableDefinition;
 import ast.expression.Variable;
 import visitor.Visitor;
 
 import java.util.List;
 
-public class FunctionType implements Type {
+public class FunctionType extends AbstractType {
 
     private Type returnType;
     private List<VariableDefinition> parameters;
@@ -26,22 +27,23 @@ public class FunctionType implements Type {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        if (parameters != null && !parameters.isEmpty()) {
-            for (int i = 0; i < parameters.size(); i++) {
-                sb.append(parameters.get(i));
-                if (i < parameters.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-        }
-        sb.append(") -> ").append(returnType);
-        return sb.toString();
+        return "function";
     }
 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+    @Override
+    public Type parenthesis(List<Type> parameters, Locatable locatable) {
+        if (this.parameters.size() != parameters.size()) {
+            return new ErrorType("The function expected " + this.parameters.size() + " arguments but received " + parameters.size(), locatable);
+        }
+        for (int i = 0; i < this.parameters.size(); i++) {
+            parameters.get(i).mustPromotesTo(this.parameters.get(i).getType(), locatable);
+        }
+        return returnType;
+    }
+
 }

@@ -1,12 +1,13 @@
 package ast.type;
 
+import ast.Locatable;
 import ast.definition.*;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordType implements Type{
+public class RecordType extends AbstractType {
 
     private List<RecordField> fields;
 
@@ -26,20 +27,22 @@ public class RecordType implements Type{
     }
 
         public String toString() {
-        	StringBuilder sb = new StringBuilder();
-        	sb.append("record {");
-        	for (int i = 0; i < fields.size(); i++) {
-        		sb.append(fields.get(i));
-        		if (i < fields.size() - 1) {
-        			sb.append(", ");
-        		}
-        	}
-        	sb.append("}");
-        	return sb.toString();
+        	return "record";
         }
 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+    @Override
+    public Type dot(String field, Locatable locatable) {
+        for (RecordField f : fields) {
+            if (f.getFieldName().equals(field)) {
+                return f.getFieldType();
+            }
+        }
+        return new ErrorType("Field " + field + " does not exist in record type", locatable);
+    }
+
 }

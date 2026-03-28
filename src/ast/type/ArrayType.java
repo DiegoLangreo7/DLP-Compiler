@@ -1,8 +1,9 @@
 package ast.type;
 
+import ast.Locatable;
 import visitor.Visitor;
 
-public class ArrayType implements Type{
+public class ArrayType extends AbstractType {
 
     private int size;
     private Type typeOf;
@@ -21,11 +22,18 @@ public class ArrayType implements Type{
     }
 
     public String toString() {
-    	return "array["+size+"] of "+typeOf;
+    	return "array";
     }
 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public Type squareBrackets(Type type, Locatable locatable){
+        if(type == IntType.getInstance())
+            return typeOf;
+        return super.squareBrackets(type, locatable);
     }
 }

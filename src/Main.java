@@ -1,3 +1,4 @@
+import ast.type.Type;
 import org.antlr.v4.runtime.*;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
@@ -28,11 +29,13 @@ public class Main {
 		ASTNode ast = parser.program().ast;
 
 		Visitor<Void,Void> lValueVisitor = new LValueVisitor();
-		//lValueVisitor.visit(ast);	  //Incorrect use of the Visitor pattern, Fix it!
 		ast.accept(lValueVisitor,null);
 
 		Visitor<Void,Void> identificationVisitor = new IdentificationVisitor();
 		ast.accept(identificationVisitor,null);
+
+		Visitor<Type,Void> typeCheckingVisitor = new TypeCheckingVisitor();
+		ast.accept(typeCheckingVisitor,null);
 
 		// * Check errors
 		if(ErrorHandler.getInstance().anyError()){

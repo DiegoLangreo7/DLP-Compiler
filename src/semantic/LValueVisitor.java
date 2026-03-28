@@ -6,7 +6,6 @@ import ast.expression.unaryOperation.*;
 import ast.statement.Assignment;
 import ast.statement.Input;
 import ast.type.ErrorType;
-import errorhandler.ErrorHandler;
 import visitor.AbstractVisitor;
 
 public class LValueVisitor extends AbstractVisitor<Void,Void> {
@@ -16,7 +15,7 @@ public class LValueVisitor extends AbstractVisitor<Void,Void> {
         e.getLeft().accept(this,param);
         e.getRigth().accept(this,param);
         if(!e.getLeft().getLValue()){
-            ErrorHandler.getInstance().addError(new ErrorType("The left side of an assignment must be an lvalue", e.getLeft()));
+            new ErrorType("The left side of an assignment must be an lvalue", e.getLeft());
         }
         return null;
     }
@@ -25,7 +24,7 @@ public class LValueVisitor extends AbstractVisitor<Void,Void> {
     public Void visit(Input e, Void param) {
         e.getParameter().accept(this,param);
         if(!e.getParameter().getLValue()){
-            ErrorHandler.getInstance().addError(new ErrorType("The expression for the input must be lvalue", e.getParameter()));
+            new ErrorType("The expression for the input must be lvalue", e.getParameter());
         }
         return null;
     }

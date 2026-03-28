@@ -28,9 +28,15 @@ public class ErrorHandler {
     }
 
     public void showErrors(PrintStream printStream) {
+        List<ErrorType> ordered = new ArrayList<>(errors);
+        ordered.sort(
+                java.util.Comparator
+                        .comparingInt(ErrorType::getLine)
+                        .thenComparingInt(ErrorType::getColumn)
+        );
         int index = 1;
-        for (ErrorType error : errors) {
-            printStream.println("[" + index + "] " + error.toString());
+        for (ErrorType error : ordered) {
+            printStream.println("[" + index + "] " + error);
             index++;
         }
     }

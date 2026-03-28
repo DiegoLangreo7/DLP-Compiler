@@ -21,7 +21,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
     @Override
     public Void visit(FunctionDefinition e, Void param) {
         if(!st.insert(e)){
-            ErrorHandler.getInstance().addError(new ErrorType("Function '" + e.getName() + "' is already defined", e));
+            new ErrorType("Function '" + e.getName() + "' is already defined", e);
         }
         st.set();
         e.getType().accept(this,param);
@@ -35,7 +35,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
     public Void visit(VariableDefinition e, Void param) {
         e.getType().accept(this,param);
         if(!st.insert(e)){
-            ErrorHandler.getInstance().addError(new ErrorType("Variable '" + e.getName() + "' is already defined", e));
+            new ErrorType("Variable '" + e.getName() + "' is already defined", e);
         }
         return null;
     }
@@ -48,7 +48,6 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
         }else{
             ErrorType error = new ErrorType("Variable '" + e.getName() + "' isn't defined", e);
             e.setDefinition(new VariableDefinition(e.getLine(),e.getColumn(),e.getName(),error));
-            ErrorHandler.getInstance().addError(error);
         }
         return null;
     }
@@ -59,7 +58,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
         for(RecordField field : e.getFields()){
             field.accept(this,param);
             if(local.contains(field.getFieldName())){
-                ErrorHandler.getInstance().addError(new ErrorType("Field '" + field.getFieldName()+ "' is already defined",field));
+                new ErrorType("Field '" + field.getFieldName()+ "' is already defined",field);
             }
             local.add(field.getFieldName());
         }

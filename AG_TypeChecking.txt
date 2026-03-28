@@ -3,17 +3,17 @@ G:
 (2) CharLiteral: expression 🠖 CHAR_CONSTANT
 (3) NumberLiteral: expression 🠖 REAL_CONSTANT
 (4) Variable: expression 🠖 ID
-(5) Arithmetic: expression₁ 🠖 expression₂ OP expression3
-(6) Comparison: expression₁ 🠖 expression₂ OP expression3
-(7) Logic: expression₁ 🠖 expression₂ OP expression3
+(5) Arithmetic: expression₁ 🠖 expression₂ (+ | - | * | / | %) expression₃
+(6) Comparison: expression₁ 🠖 expression₂ (> | < | >= | <= | == | !=)  expression₃
+(7) Logic: expression₁ 🠖 expression₂ (&& | ||) expression3
 (8) UnaryMinus: expression₁ 🠖 expression₂
 (9) UnaryNot: expression₁ 🠖 expression₂
-(10) ArrayAccess: expression1 🠖 expression₂ expression3
-(11) FieldAccess: expression2 🠖 expression₂ FIELD_NAME
-(12) Invocation: expression1 🠖 expression₂ expression3*
-(13) Cast: expression1 🠖 type expression₂
-(14) Assignment: statement 🠖 expression1 expression₂
-(15) IfElse: statement₁ 🠖 expression statement1* statement₂*
+(10) ArrayAccess: expression₁ 🠖 expression₂ expression₃
+(11) FieldAccess: expression₁ 🠖 expression₂ ID
+(12) Invocation: expression₁ 🠖 expression₂ expression₃*
+(13) Cast: expression₁ 🠖 type expression₂
+(14) Assignment: statement 🠖 expression₁ expression₂
+(15) IfElse: statement₁ 🠖 expression statement₁* statement₂*
 (16) Input: statement 🠖 expression
 (17) Log: statement 🠖 expression
 (18) Return: statement 🠖 expression
@@ -23,24 +23,34 @@ G:
 (22) FunctionType: type₁ 🠖 definition* type₂
 (23) IntType: type 🠖
 (24) NumberType: type 🠖
-(25) RecordField: recordField 🠖 NAME type
+(25) RecordField: recordField 🠖 ID type
 (26) RecordType: type 🠖 recordField*
 (27) VoidType: type 🠖
-(28) FunctionDefinition: definition 🠖 NAME type statement*
-(29) VariableDefinition: definition 🠖 NAME type
+(28) FunctionDefinition: definition 🠖 ID type statement*
+(29) VariableDefinition: definition 🠖 ID type
 (30) Program: program 🠖 definition*
-
 
 A:
 { expression.type ∈ Type, statement.returnType ∈ Type}
-
-
 
 R:
 (1) expression.type = IntType.getInstance()
 (2) expression.type = CharType.getInstance()
 (3) expression.type = NumberType.getInstance()
 (4) expression.type = expression.definition.type
-(y) expression1.type = expression2.type.arithmetic(expression3.type)
-
-(x) expression.type.mustBeLogical(statement1)
+(5) expression₁.type = expression₂.type.arithmetic(expression₃.type)
+(6) expression₁.type = expression₂.type.comparison(expression₃.type)
+(7) expression₁.type = expression₂.type.logic(expression₃.type)
+(8) expression₁.type = expression₂.type.arithmetic()
+(9) expression₁.type = expression₂.type.logic()
+(10) expression₁.type = expression₂.type.squareBrackets(expression₃.type)
+(11) expression₁.type = expression₂.type.dot(ID)
+(12)  expression₁.type = expression₂.type.parenthesis(expression₃*.type)
+(13) expression₁.type = expression₂.type.canBeCastTo(type)
+(14) expression₂.type.musPromotesTo(expression₁.type)
+(15) expression.type.mustBeLogical()
+(16) expression.type.mustBeBuiltIn()
+(17) expression.type.mustBeBuiltIn()
+(18) expression.mustPromoteTo(statement.returnType)
+(19) expression.type.mustBeLogical()
+(28) statement*.forEach(statement => statement.returnType = type.returnType)
