@@ -3,8 +3,6 @@ package ast.type;
 import ast.Locatable;
 import visitor.Visitor;
 
-import java.util.List;
-
 public class CharType extends AbstractType {
 
     private static CharType instance;
@@ -64,5 +62,10 @@ public class CharType extends AbstractType {
         if (type == this || type == IntType.getInstance() || type == NumberType.getInstance())
             return type;
         return super.canBeCastTo(type, locatable);
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        return 1;
     }
 }

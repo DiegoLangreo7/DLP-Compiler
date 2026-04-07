@@ -56,4 +56,9 @@ public class NumberType extends AbstractType {
         }
         return super.canBeCastTo(type, locatable);
     }
+
+    @Override
+    public int getNumberOfBytes() {
+        return 4;
+    }
 }

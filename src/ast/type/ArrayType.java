@@ -13,10 +13,6 @@ public class ArrayType extends AbstractType {
         this.typeOf = typeOf;
     }
 
-    public int getSize() {
-        return size;
-    }
-
     public Type getTypeOf() {
         return typeOf;
     }
@@ -35,5 +31,10 @@ public class ArrayType extends AbstractType {
         if(type == IntType.getInstance())
             return typeOf;
         return super.squareBrackets(type, locatable);
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        return this.size * this.typeOf.getNumberOfBytes();
     }
 }

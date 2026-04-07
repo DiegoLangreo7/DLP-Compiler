@@ -81,4 +81,9 @@ public class IntType extends AbstractType{
             return type;
         return super.canBeCastTo(type, locatable);
     }
+
+    @Override
+    public int getNumberOfBytes() {
+        return 2;
+    }
 }

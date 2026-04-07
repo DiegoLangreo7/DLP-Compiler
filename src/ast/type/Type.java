@@ -19,5 +19,6 @@ public interface Type extends ASTNode {
     Type dot(String field, Locatable locatable);
     Type parenthesis(List<Type> parameters, Locatable locatable);
     Type canBeCastTo(Type type, Locatable locatable);
+    int getNumberOfBytes();
 
 }

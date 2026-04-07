@@ -81,4 +81,9 @@ public abstract class AbstractType implements Type{
             return type;
         return new  ErrorType("Type " + this + " cannot be cast to " + type, locatable);
     }
+
+    @Override
+    public int getNumberOfBytes() {
+        throw new UnsupportedOperationException("Error de sintesis");
+    }
 }

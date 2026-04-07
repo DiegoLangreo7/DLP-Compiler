@@ -45,4 +45,13 @@ public class RecordType extends AbstractType {
         return new ErrorType("Field " + field + " does not exist in record type", locatable);
     }
 
+    @Override
+    public int getNumberOfBytes() {
+        int fieldsBytesSum = 0;
+        for(RecordField field : fields){
+            fieldsBytesSum += field.getFieldType().getNumberOfBytes();
+        }
+        return fieldsBytesSum;
+    }
+
 }
