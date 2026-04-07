@@ -1,9 +1,6 @@
 package semantic;
 
-import ast.Program;
-import ast.definition.Definition;
 import ast.definition.FunctionDefinition;
-import ast.definition.VariableDefinition;
 import ast.expression.*;
 import ast.expression.binaryOperation.Arithmetic;
 import ast.expression.binaryOperation.Comparison;
