@@ -1,0 +1,58 @@
+G:
+(1) IntLiteral: expression 🠖 INT_CONSTANT
+(2) CharLiteral: expression 🠖 CHAR_CONSTANT
+(3) NumberLiteral: expression 🠖 REAL_CONSTANT
+(4) Variable: expression 🠖 ID
+(5) Arithmetic: expression₁ 🠖 expression₂ (+ | - | * | / | %) expression₃
+(6) Comparison: expression₁ 🠖 expression₂ (> | < | >= | <= | == | !=)  expression₃
+(7) Logic: expression₁ 🠖 expression₂ (&& | ||) expression3
+(8) UnaryMinus: expression₁ 🠖 expression₂
+(9) UnaryNot: expression₁ 🠖 expression₂
+(10) ArrayAccess: expression₁ 🠖 expression₂ expression₃
+(11) FieldAccess: expression₁ 🠖 expression₂ ID
+(12) Invocation: expression₁ 🠖 expression₂ expression₃*
+(13) Cast: expression₁ 🠖 type expression₂
+(14) Assignment: statement 🠖 expression₁ expression₂
+(15) IfElse: statement₁ 🠖 expression statement₂* statement₃*
+(16) Input: statement 🠖 expression
+(17) Log: statement 🠖 expression
+(18) Return: statement 🠖 expression
+(19) While: statement₁ 🠖 expression statement₂*
+(20) ArrayType: type₁ 🠖 SIZE type
+(21) CharType: type 🠖 
+(22) FunctionType: type₁ 🠖 definition* type₂
+(23) IntType: type 🠖
+(24) NumberType: type 🠖
+(25) RecordField: recordField 🠖 ID type
+(26) RecordType: type 🠖 recordField*
+(27) VoidType: type 🠖
+(28) FunctionDefinition: definition 🠖 ID type statement*
+(29) VariableDefinition: definition 🠖 ID type
+(30) Program: program 🠖 definition*
+
+A:
+{ statement.hasReturn ∈ Boolean}
+
+R:
+(14) statement.hasReturn = false
+(15) Boolean ifPart = statement₂*.stream().anyMatch(statement::hasReturn);
+     Boolean elsePart = statement₃*.stream().anyMatch(statement::hasReturn);
+     statement₁.hasReturn = ifPart && elsePart
+(16) statement.hasReturn = false
+(17) statement.hasReturn = false
+(18) statement.hasReturn = true
+(19) statement₁.hasReturn = statement₂*.stream().anyMatch(statement::hasReturn);
+(28) Boolean hasReturn = false
+     for(Statement s : statement* ) {
+         if(s.hasReturn) {
+             hasReturn = true
+         }
+     }
+     if(!hasReturn) {
+        System.out.println("Missing return statement")
+     }
+
+
+
+
+

@@ -1,8 +1,43 @@
-function main(): void {
-    let numero: int;
-    let arreglo: [5]int;
+function f(a:int): int {
+    // error 1
+}
 
-    numero = 10;
-    // Error: el cast solo se permite hacia tipos simples (int, number, char)
-    arreglo = (numero as [5]int);
+function g(a:int): int {
+    if(a > 0){
+        return a;
+    }
+    // error 2
+}
+
+function h(a:int, b:number): int{
+    if(a > 0){
+        return a;
+    }
+    return a;
+}
+
+function k(a:int, b:number): int{
+    if(a > 0){
+        return a;
+    }
+    else{
+        return a;
+    }
+}
+
+function m(a:int): int {
+    if(a > 0){
+        if(a > 10){
+            return a;
+        }
+        else{
+        }
+    }
+    else{
+        return a;
+    }
+}
+
+
+function main(): void{
 }
