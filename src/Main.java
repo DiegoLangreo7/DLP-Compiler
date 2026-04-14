@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.*;
 import ast.ASTNode;
 import errorhandler.ErrorHandler;
 import parser.*;
+import semantic.HasReturnVisitor;
 import semantic.IdentificationVisitor;
 import semantic.LValueVisitor;
 import semantic.TypeCheckingVisitor;
@@ -31,6 +32,7 @@ public class Main {
         ast.accept(new LValueVisitor(), null);
         ast.accept(new IdentificationVisitor(), null);
         ast.accept(new TypeCheckingVisitor(), null);
+        ast.accept(new HasReturnVisitor(),null);
         // * Check errors
         if (ErrorHandler.getInstance().anyError()) {
             // * Show errors

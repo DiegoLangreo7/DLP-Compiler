@@ -1,4 +1,4 @@
-package codeGeneration;
+package codegen;
 
 import ast.definition.FunctionDefinition;
 import ast.definition.VariableDefinition;
