@@ -42,14 +42,14 @@ public class CharType extends AbstractType {
 
     @Override
     public Type comparison(Type type, Locatable locatable) {
-        if (this == type)
+        if (this == type || type == IntType.getInstance())
             return IntType.getInstance();
         return super.comparison(type, locatable);
     }
 
     @Override
     public void mustPromotesTo(Type type, Locatable locatable) {
-        if (type == this)
+        if (type == this || type == IntType.getInstance() || type == NumberType.getInstance())
             return;
         super.mustPromotesTo(type, locatable);
     }
