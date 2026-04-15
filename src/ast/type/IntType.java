@@ -53,7 +53,7 @@ public class IntType extends AbstractType{
 
     @Override
     public Type logic(Type type, Locatable locatable) {
-        if (this == type)
+        if (this == type || type == CharType.getInstance())
             return type;
         return super.logic(type, locatable);
     }
@@ -85,5 +85,10 @@ public class IntType extends AbstractType{
     @Override
     public int getNumberOfBytes() {
         return 2;
+    }
+
+    @Override
+    public String suffix() {
+        return "i";
     }
 }

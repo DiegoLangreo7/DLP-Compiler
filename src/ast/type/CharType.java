@@ -28,8 +28,10 @@ public class CharType extends AbstractType {
 
     @Override
     public Type arithmetic(Type type, Locatable locatable) {
-        if (this == type)
+        if (this == type || type == IntType.getInstance())
             return IntType.getInstance();
+        else if (type == NumberType.getInstance())
+            return NumberType.getInstance();
         return super.arithmetic(type, locatable);
     }
 
@@ -65,7 +67,24 @@ public class CharType extends AbstractType {
     }
 
     @Override
+    public Type logic(Type type, Locatable locatable) {
+        if (this == type || type == IntType.getInstance())
+            return IntType.getInstance();
+        return super.logic(type, locatable);
+    }
+
+    @Override
+    public Type logic(Locatable locatable) {
+        return IntType.getInstance();
+    }
+
+    @Override
     public int getNumberOfBytes() {
         return 1;
+    }
+
+    @Override
+    public String suffix() {
+        return "b";
     }
 }

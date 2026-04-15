@@ -84,6 +84,11 @@ public abstract class AbstractType implements Type{
 
     @Override
     public int getNumberOfBytes() {
-        throw new UnsupportedOperationException("Error de sintesis");
+        throw new UnsupportedOperationException("getNumberOfBytes is not supported for type " + this);
+    }
+
+    @Override
+    public String suffix() {
+        throw new UnsupportedOperationException("suffix is not supported for type " + this);
     }
 }

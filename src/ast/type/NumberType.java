@@ -61,4 +61,9 @@ public class NumberType extends AbstractType {
     public int getNumberOfBytes() {
         return 4;
     }
+
+    @Override
+    public String suffix() {
+        return "f";
+    }
 }

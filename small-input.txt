@@ -40,4 +40,6 @@ function m(a:int): int {
 
 
 function main(): void{
+   let a : int;
+   a = 'a' + 1;
 }
