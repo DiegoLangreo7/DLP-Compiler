@@ -2,7 +2,6 @@ package codegen;
 
 import ast.type.CharType;
 import ast.type.NumberType;
-import ast.type.IntType;
 import ast.type.Type;
 
 import java.io.IOException;
@@ -51,7 +50,71 @@ public class CodeGenerator {
         out.flush();
     }
 
-    // Métodos simples
+    // Push Instructions
+
+    public void push(Type type, String value) {
+        out.println("\tpush"+type.suffix()+"\t"+value);
+        out.flush();
+    }
+
+    public void pusha(int offset) {
+        out.println("\tpusha\t"+offset);
+        out.flush();
+    }
+
+    public void pushbp() {
+        out.println("\tpusha\tbp");
+        out.flush();
+    }
+
+    // Load and Store Instructions
+
+    public void load(Type type) {
+        out.println("\tload"+type.suffix());
+        out.flush();
+    }
+
+    public void store(Type type) {
+        out.println("\tstore"+type.suffix());
+        out.flush();
+    }
+
+    // Arithmetic operations
+
+    public void arithmetic(Type type, String operator) {
+        switch (operator) {
+            case "+": add(type); break;
+            case "-": sub(type); break;
+            case "*": mul(type); break;
+            case "/": div(type); break;
+            case "%": mod(type); break;
+        }
+    }
+
+    public void add(Type type) {
+        out.println("add"+type.suffix());
+        out.flush();
+    }
+
+    public void sub(Type type) {
+        out.println("sub"+type.suffix());
+        out.flush();
+    }
+
+    public void mul(Type type) {
+        out.println("mul"+type.suffix());
+        out.flush();
+    }
+
+    public void div(Type type) {
+        out.println("div"+type.suffix());
+        out.flush();
+    }
+
+    public void mod(Type type) {
+        out.println("mod"+type.suffix());
+        out.flush();
+    }
 
     public void convertTo(Type from, Type to) {
         if(from == to) return;
@@ -62,11 +125,6 @@ public class CodeGenerator {
             }
         }
         // falta por acabar
-    }
-
-    public void store(Type type){
-        out.println("store"+type.suffix());
-        out.flush();
     }
 
     // Métodos especiales
@@ -82,4 +140,6 @@ public class CodeGenerator {
         out.println("' "+text);
         out.flush();
     }
+
+
 }
