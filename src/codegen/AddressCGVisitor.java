@@ -22,7 +22,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void,Void> {
      *    else{
      *        <push bp>
      *        <pusha> expression.definition.offset
-     *        <add>
+     *        <addi>
      *    }
      */
     @Override

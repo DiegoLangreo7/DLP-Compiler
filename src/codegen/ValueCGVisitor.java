@@ -1,6 +1,10 @@
 package codegen;
 
-import ast.expression.Variable;
+import ast.expression.*;
+import ast.expression.binaryOperation.Arithmetic;
+import ast.expression.binaryOperation.Comparison;
+import ast.expression.binaryOperation.Logic;
+import ast.expression.unaryOperation.UnaryNot;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
 
@@ -10,6 +14,116 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
         this.cg = codeGenerator;
         this.addressCGVisitor = addressCGVisitor;
     }
+
+    /**
+     * void value[[IntLiteral: expression -> INT_CONSTANT]]() =
+     *   <pushi> INT_CONSTANT
+     */
+    @Override
+    public Void visit(IntLiteral e, Void param) {
+        cg.push(e.getType(),String.valueOf(e.getValue()));
+        return null;
+    }
+
+    /**
+     * void value[[CharLiteral: expression -> CHAR_CONSTANT]]() =
+     *   <pushb> CHAR_CONSTANT
+     */
+    @Override
+    public Void visit(CharLiteral e, Void param) {
+        cg.push(e.getType(),String.valueOf(e.getValue()));
+        return null;
+    }
+
+    /**
+     * void value[[NumberLiteral: expression -> REAL_CONSTANT]]() =
+     *   <pushf> REAL_CONSTANT
+     */
+    @Override
+    public Void visit(NumberLiteral e, Void param) {
+        cg.push(e.getType(),String.valueOf(e.getValue()));
+        return null;
+    }
+
+    /**
+     * void value[[Arithmetic: expression1 -> expression2 (+ | - | * | / | %) expression3]]() =
+     *    value[[expression2]]()
+     *    cg.convertTo(expression2.type,expression1.type)
+     *    value[[expression3]]()
+     *    cg.convertTo(expression3.type,expression1.type)
+     *    cg.arithmetic(expression1.type, expression1.operator)
+     */
+    @Override
+    public Void visit(Arithmetic e, Void param) {
+        e.getLeft().accept(this, null);
+        cg.convertTo(e.getLeft().getType(), e.getType());
+        e.getRight().accept(this, null);
+        cg.convertTo(e.getRight().getType(), e.getType());
+        cg.arithmetic(e.getType(), e.getOperator());
+        return null;
+    }
+
+    /**
+     * void value[[Logical: expression1 -> expression2 (&& | ||) expression3]]() =
+     *   value[[expression2]]()
+     *   cg.convertTo(expression2.type,expression1.type)
+     *   value[[expression3]]()
+     *   cg.convertTo(expression3.type,expression1.type)
+     *   cg.logical(expression1.type, expression1.operator)
+     */
+    @Override
+    public Void visit(Logic e, Void param) {
+        e.getLeft().accept(this, null);
+        cg.convertTo(e.getLeft().getType(), e.getType());
+        e.getRight().accept(this, null);
+        cg.convertTo(e.getRight().getType(), e.getType());
+        cg.logical(e.getOperator());
+        return null;
+    }
+
+    /**
+     * void value[[Comparison: expression1 -> expression2 (> | < | >= | <= | == | !=) expression3]]() =
+     *      value[[expression2]]()
+     *      cg.convertTo(expression2.type,expression1.type)
+     *      value[[expression3]]()
+     *      cg.convertTo(expression3.type,expression1.type)
+     *      cg.comparison(expression1.type, expression1.operator)
+     */
+    @Override
+    public Void visit(Comparison e, Void param){
+        e.getLeft().accept(this, param);
+        cg.convertTo(e.getLeft().getType(), e.getType());
+        e.getRight().accept(this, param);
+        cg.convertTo(e.getRight().getType(), e.getType());
+        cg.comparison(e.getType(), e.getOperator());
+        return null;
+    }
+
+    /**
+     * void value[[UnaryNot: expression1 -> expression2))() =
+     *     value[[expression2]]()
+     *     cg.logical("!")
+     */
+    @Override
+    public Void visit(UnaryNot e, Void param) {
+        e.getOperand().accept(this, param);
+        cg.logical("!");
+        return null;
+    }
+
+    /**
+     * void value[[Cast: statement -> type expression]]() =
+     *      value[[expression]]()
+     *      cg.convert(expression.type,type)
+     */
+    @Override
+    public Void visit(Cast e, Void param) {
+        e.getOperand().accept(this,param);
+        cg.convertTo(e.getOperand().getType(),e.getCastType());
+        return null;
+    }
+
+    // L-VALUE's
 
     /**
      * void value[[Variable: expression -> ID]]() =

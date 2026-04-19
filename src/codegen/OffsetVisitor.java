@@ -86,6 +86,9 @@ public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
             statement.accept(this, true);
         }
 
+        e.setParamBytesSum(this.paramBytesSum);
+        e.setLocalBytesSum(this.localBytesSum);
+
         return null;
     }
 

@@ -2,9 +2,13 @@ package codegen;
 
 import ast.Program;
 import ast.definition.Definition;
+import ast.definition.FunctionDefinition;
 import ast.definition.VariableDefinition;
 import ast.statement.Assignment;
-import ast.type.ErrorType;
+import ast.statement.Input;
+import ast.statement.Log;
+import ast.statement.Statement;
+import ast.type.FunctionType;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
 
@@ -37,26 +41,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
         }
         cg.mainInvocation();
         for(Definition d : e.getDefinitions()){
-            if(d instanceof VariableDefinition){
+            if(d instanceof FunctionDefinition){
                 d.accept(this,param);
             }
         }
-        return null;
-    }
-
-    /**
-     * void execute[[Assignment: statement -> expr1 expr2]]() =
-     *      address[[expr1]]
-     *      value[[expr2]]
-     *      cg.convertTo(expr2.type,expr1.type)
-     *      <store> expr1.type.suffix
-     */
-    @Override
-    public Void visit(Assignment e, Void param) {
-        e.getLeft().accept(this.addressCGVisitor,param);
-        e.getRigth().accept(this.valueCGVisitor,param);
-        cg.convertTo(e.getRigth().getType(),e.getLeft().getType());
-        cg.store(e.getLeft().getType());
         return null;
     }
 
@@ -70,7 +58,79 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      *     <enter> definition.localBytesSum
      *     for(VarDef s : statement*)
      *         execute[[s]]()
-     *     <ret> type.returnValue.getNumberOfBytes, definition.localBytesSum. definition.paramBytesSum
+     *     <ret> type.returnValue.getNumberOfBytes, definition.localBytesSum, definition.paramBytesSum
      */
+    @Override
+    public Void visit(FunctionDefinition e, Void param) {
+        cg.functionID(e.getName());
+        cg.comment("* Parameters");
+        for(VariableDefinition parameter : ((FunctionType) e.getType()).getParameters()){
+            parameter.accept(this,param);
+        }
+        cg.comment("* Local variables");
+        for(Statement funcLine : e.getFuncBody()){
+            if(funcLine instanceof VariableDefinition)
+                funcLine.accept(this,param);
+        }
+        cg.enter(e.getLocalBytesSum());
+        for(Statement funcLine : e.getFuncBody()){
+            if(!(funcLine instanceof VariableDefinition))
+                funcLine.accept(this,param);
+        }
+        cg.ret(0,4,0);
+        return null;
+    }
+
+    /**
+     * void execute[[VariableDefinition: definition -> type ID]]() =
+     *     ' <*> type.toString ID <(offset> definition.offset <)>
+     */
+    @Override
+    public Void visit(VariableDefinition e, Void param){
+        cg.comment("* "+e.getType().toString()+" "+e.getName()+" (offset "+e.getOffset()+")");
+        return null;
+    }
+
+    /**
+     * void execute[[Assignment: statement -> expr1 expr2]]() =
+     *      address[[expr1]]()
+     *      value[[expr2]]()
+     *      cg.convertTo(expr2.type,expr1.type)
+     *      <store> expr1.type.suffix
+     */
+    @Override
+    public Void visit(Assignment e, Void param) {
+        e.getLeft().accept(this.addressCGVisitor,param);
+        e.getRigth().accept(this.valueCGVisitor,param);
+        cg.convertTo(e.getRigth().getType(),e.getLeft().getType());
+        cg.store(e.getLeft().getType());
+        return null;
+    }
+
+    /**
+     * void execute[[Input: statement -> expression]]() =
+     *     address[[expression]]()
+     *     <in> expression.type.suffix
+     *     <store> expression.type.suffix
+     */
+    @Override
+    public Void visit(Input e,  Void param) {
+        e.getParameter().accept(this.addressCGVisitor,param);
+        cg.in(e.getParameter().getType());
+        cg.store(e.getParameter().getType());
+        return null;
+    }
+
+    /**
+     * void execute[[Log: statement -> expression]]() =
+     *   value[[expression]]()
+     *   <out> expression.type.suffix
+     */
+    @Override
+    public Void visit(Log e, Void param) {
+        e.getParameter().accept(this.valueCGVisitor,param);
+        cg.out(e.getParameter().getType());
+        return null;
+    }
 
 }

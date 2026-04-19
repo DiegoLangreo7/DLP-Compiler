@@ -9,6 +9,8 @@ import java.util.List;
 public class FunctionDefinition extends AbstractDefinition {
 
     private List<Statement> funcBody;
+    private int localBytesSum;
+    private int paramBytesSum;
 
     public FunctionDefinition(int line, int column, String name, Type type, List<Statement> funcBody) {
         super(line, column,name, type);
@@ -33,6 +35,23 @@ public class FunctionDefinition extends AbstractDefinition {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    public int getLocalBytesSum() {
+        return localBytesSum;
+    }
+
+    public void setLocalBytesSum(int localBytesSum) {
+        this.localBytesSum = localBytesSum;
+    }
+
+
+    public int getParamBytesSum() {
+        return paramBytesSum;
+    }
+
+    public void setParamBytesSum(int paramBytesSum) {
+        this.paramBytesSum = paramBytesSum;
     }
 
 }
