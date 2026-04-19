@@ -328,6 +328,7 @@ public class CodeGenerator {
     }
 
     public void functionID(String name) {
+        out.println();
         out.println(" " + name + ":");
         out.flush();
     }

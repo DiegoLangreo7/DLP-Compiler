@@ -63,6 +63,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(FunctionDefinition e, Void param) {
+        cg.line(e.getLine());
         FunctionType functionType = (FunctionType) e.getType();
         cg.functionID(e.getName());
         cg.comment("* Parameters");
