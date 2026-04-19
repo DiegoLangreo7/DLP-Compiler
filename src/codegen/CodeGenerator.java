@@ -42,12 +42,15 @@ public class CodeGenerator {
     // Control para MAPL
 
     public void source(String sourceFilename){
-        out.println("#source \""+sourceFilename+"\"");
+        out.println();
+        out.println("#source\t\"" + sourceFilename + "\"");
+        out.println();
         out.flush();
     }
 
     public void line(int line){
-        out.println("#line "+line);
+        out.println();
+        out.println("#line\t" + line);
         out.flush();
     }
 
@@ -64,7 +67,7 @@ public class CodeGenerator {
     }
 
     public void pushbp() {
-        out.println("\tpusha\tbp");
+        out.println("\tpush\tbp");
         out.flush();
     }
 
@@ -309,21 +312,23 @@ public class CodeGenerator {
      *      <int_constant> 	and the last one, the bytes of all the parameters.
      */
     public void ret(int numberOfBytes, int localBytesSum, int paramBytesSum) {
-        out.println("\tret "+numberOfBytes+", "+localBytesSum+", "+paramBytesSum);
+        out.println("\tret\t" + numberOfBytes + ", " + localBytesSum + ", " + paramBytesSum);
         out.flush();
     }
 
     // Métodos especiales
 
     public void mainInvocation() {
+        out.println();
         out.println("' Invocation to the main function");
         out.println("call main");
         out.println("halt");
+        out.println();
         out.flush();
     }
 
     public void functionID(String name) {
-        out.println(" "+name+" :");
+        out.println(" " + name + ":");
         out.flush();
     }
 

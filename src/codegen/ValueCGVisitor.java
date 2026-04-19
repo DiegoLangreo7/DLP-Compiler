@@ -31,7 +31,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(CharLiteral e, Void param) {
-        cg.push(e.getType(),String.valueOf(e.getValue()));
+        cg.push(e.getType(), String.valueOf((int) e.getValue()));
         return null;
     }
 

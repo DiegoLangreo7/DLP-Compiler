@@ -32,7 +32,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void,Void> {
         }
         else{
             cg.pushbp();
-            cg.pusha(((VariableDefinition) e.getDefinition()).getOffset());
+            cg.push(IntType.getInstance(),String.valueOf(((VariableDefinition) e.getDefinition()).getOffset()));
             cg.add(IntType.getInstance());
         }
         return null;

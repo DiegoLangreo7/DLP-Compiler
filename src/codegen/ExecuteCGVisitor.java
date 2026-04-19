@@ -9,6 +9,7 @@ import ast.statement.Input;
 import ast.statement.Log;
 import ast.statement.Statement;
 import ast.type.FunctionType;
+import ast.type.VoidType;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
 
@@ -62,9 +63,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(FunctionDefinition e, Void param) {
+        FunctionType functionType = (FunctionType) e.getType();
         cg.functionID(e.getName());
         cg.comment("* Parameters");
-        for(VariableDefinition parameter : ((FunctionType) e.getType()).getParameters()){
+        for(VariableDefinition parameter : functionType.getParameters()){
             parameter.accept(this,param);
         }
         cg.comment("* Local variables");
@@ -77,7 +79,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
             if(!(funcLine instanceof VariableDefinition))
                 funcLine.accept(this,param);
         }
-        cg.ret(0,4,0);
+        int returnBytes = functionType.getReturnType() instanceof VoidType
+                ? 0
+                : functionType.getReturnType().getNumberOfBytes();
+        cg.ret(returnBytes, e.getLocalBytesSum(), e.getParamBytesSum());
         return null;
     }
 
@@ -87,7 +92,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(VariableDefinition e, Void param){
-        cg.comment("* "+e.getType().toString()+" "+e.getName()+" (offset "+e.getOffset()+")");
+        cg.comment("* " + e.getType() + " " + e.getName() + " (offset " + e.getOffset() + ")");
         return null;
     }
 
@@ -100,6 +105,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(Assignment e, Void param) {
+        cg.line(e.getLine());
+        cg.comment("* Assignment");
         e.getLeft().accept(this.addressCGVisitor,param);
         e.getRigth().accept(this.valueCGVisitor,param);
         cg.convertTo(e.getRigth().getType(),e.getLeft().getType());
@@ -115,6 +122,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(Input e,  Void param) {
+        cg.line(e.getLine());
+        cg.comment("* Read");
         e.getParameter().accept(this.addressCGVisitor,param);
         cg.in(e.getParameter().getType());
         cg.store(e.getParameter().getType());
@@ -128,6 +137,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(Log e, Void param) {
+        cg.line(e.getLine());
+        cg.comment("* Write");
         e.getParameter().accept(this.valueCGVisitor,param);
         cg.out(e.getParameter().getType());
         return null;
