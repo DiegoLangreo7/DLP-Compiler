@@ -27,6 +27,7 @@ public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
      */
     @Override
     public Void visit(VariableDefinition e, Boolean isLocal) {
+        e.getType().accept(this,isLocal);
 
         if(e.getScope()==0){ // Variables globales
             e.setOffset(globalBytesSum);

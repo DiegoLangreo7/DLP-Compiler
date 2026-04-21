@@ -55,6 +55,11 @@ public class CharType extends AbstractType {
     }
 
     @Override
+    public void mustBeLogical(Locatable locatable) {
+        // DO NOTHING
+    }
+
+    @Override
     public void mustBeBuiltIn(Locatable locatable) {
         // DO NOTHING
     }

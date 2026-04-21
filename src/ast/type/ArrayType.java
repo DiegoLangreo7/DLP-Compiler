@@ -18,7 +18,7 @@ public class ArrayType extends AbstractType {
     }
 
     public String toString() {
-    	return "array";
+    	return "ArrayType[of:"+typeOf+",size:"+size+"]";
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ArrayType extends AbstractType {
 
     @Override
     public Type squareBrackets(Type type, Locatable locatable){
-        if(type == IntType.getInstance())
+        if(type == IntType.getInstance() || type == CharType.getInstance())
             return typeOf;
         return super.squareBrackets(type, locatable);
     }

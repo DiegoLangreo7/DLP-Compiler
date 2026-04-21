@@ -6,6 +6,7 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RecordType extends AbstractType {
 
@@ -26,9 +27,31 @@ public class RecordType extends AbstractType {
         return fields;
     }
 
-        public String toString() {
-        	return "record";
+    public RecordField getField(String ID) {
+        for(RecordField field : fields){
+            if(Objects.equals(field.getFieldName(), ID)){
+                return field;
+            }
         }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("RecordType[fields: ");
+
+        for (int i = 0; i < fields.size(); i++) {
+            sb.append(fields.get(i).toString());
+            if (i < fields.size() - 1) {
+                sb.append(", ");
+            }
+        }
+
+        sb.append("]");
+        return sb.toString();
+    }
+
 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
@@ -53,5 +76,4 @@ public class RecordType extends AbstractType {
         }
         return fieldsBytesSum;
     }
-
 }

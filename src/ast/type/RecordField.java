@@ -24,16 +24,19 @@ public class RecordField extends AbstractLocatable {
         return fieldType;
     }
 
+    @Override
     public String toString() {
-        	return fieldName+": "+fieldType;
-        }
+        return "Field[name:" + fieldName +
+                ", type:" + fieldType +
+                ", offset:" + offset + "]";
+    }
 
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
 
     public int getOffset() {
-        return offset;
+        return this.offset;
     }
 
     public void setOffset(int offset) {

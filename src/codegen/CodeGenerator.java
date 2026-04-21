@@ -294,8 +294,54 @@ public class CodeGenerator {
     }
 
     // ==========================================
+    //           Jumps
+    // ==========================================
+
+    /**
+     * <id>: Defines one label for jumps and invocations (functions).
+     */
+    public void labelID(String name) {
+        out.println();
+        out.println(" " + name + ":");
+        out.flush();
+    }
+
+    /**
+     * jmp <label>		Jumps (unconditionally) to the label specified as a parameter.
+     */
+    public void jmp(String label){
+        out.println("\tjmp "+label);
+        out.flush();
+    }
+
+    /**
+     * jz <label> 		Pops one integer and jumps to the label if the popped integer is zero.
+     */
+    public void jz(String label){
+        out.println("\tjz "+label);
+        out.flush();
+    }
+
+    /**
+     * jnz <label> 	    Pops one integer and jumps to the label if the popped integer is not zero.
+     */
+    public void jnz(String label){
+        out.println("\tjnz "+label);
+        out.flush();
+    }
+
+    // ==========================================
     //           Functions
     // ==========================================
+
+    /**
+     * <id>: Defines a label for jumps and invocations (functions)
+     */
+    public void functionID(String name) {
+        out.println();
+        out.println(" " + name + ":");
+        out.flush();
+    }
 
     /**
      *	enter <int_constant> 	Allocates <int_constant> bytes on the top of the stack
@@ -327,17 +373,13 @@ public class CodeGenerator {
         out.flush();
     }
 
-    public void functionID(String name) {
-        out.println();
-        out.println(" " + name + ":");
-        out.flush();
+    public String getLabel(){
+        return "label"+this.labels++;
     }
 
     public void comment(String text){
         out.println("\t' "+text);
         out.flush();
     }
-
-
 
 }

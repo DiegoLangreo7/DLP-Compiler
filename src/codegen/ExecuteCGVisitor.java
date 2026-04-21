@@ -4,11 +4,9 @@ import ast.Program;
 import ast.definition.Definition;
 import ast.definition.FunctionDefinition;
 import ast.definition.VariableDefinition;
-import ast.statement.Assignment;
-import ast.statement.Input;
-import ast.statement.Log;
-import ast.statement.Statement;
+import ast.statement.*;
 import ast.type.FunctionType;
+import ast.type.IntType;
 import ast.type.VoidType;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
@@ -18,8 +16,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
 
     public ExecuteCGVisitor(CodeGenerator codeGenerator) {
         this.cg = codeGenerator;
-        this.addressCGVisitor = new AddressCGVisitor(this.cg,this.valueCGVisitor);
-        this.valueCGVisitor = new ValueCGVisitor(this.cg,this.addressCGVisitor);
+        //---
+        this.addressCGVisitor = new AddressCGVisitor(this.cg);
+        this.valueCGVisitor = new ValueCGVisitor(this.cg);
+        //---
+        this.addressCGVisitor.setValueCGVisitor(this.valueCGVisitor);
+        this.valueCGVisitor.setAddressCGVisitor(this.addressCGVisitor);
     }
 
     /**
@@ -142,6 +144,74 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void,Void> {
         cg.comment("* Write");
         e.getParameter().accept(this.valueCGVisitor,param);
         cg.out(e.getParameter().getType());
+        return null;
+    }
+
+    /**
+     * execute[[While: statement1 -> expression statement2*]]() =
+     *      String cond = cg.getLabel()
+     *      String end = cg.getLabel()
+     *      cond <:>
+     *      value[[expression]]()
+     *      cg.convertTo(expression.type,IntType)
+     *      <jz> end
+     *      statement2*.forEach(statement -> execute[[statement]]())
+     *      <jmp> cond
+     *      end <:>
+     */
+    @Override
+    public Void visit(While e, Void param){
+        cg.line(e.getLine());
+        cg.comment("* While");
+        String cond = cg.getLabel();
+        String end = cg.getLabel();
+        cg.line(e.getLine());
+        cg.labelID(cond);
+        e.getCondition().accept(this.valueCGVisitor,param);
+        cg.convertTo(e.getCondition().getType(), IntType.getInstance());
+        cg.jz(end);
+        for(Statement statement : e.getWhileBody()){
+            statement.accept(this,param);
+        }
+        cg.jmp(cond);
+        cg.line(e.getLine());
+        cg.labelID(end);
+        return null;
+    }
+
+    /**
+     *  execute[[IfElse: statement1 -> expression statement2* statement3*^]]() =
+     *      String else = cg.getLabel()
+     *      String end = cg.getLabel()
+     *      value[[expression]]()
+     *      cg.convertTo(expression.type, IntType)
+     *      <jz> else
+     *      statement2*.forEach(statement -> execute[[statement]]())
+     *      <jmp> end
+     *      else <:>
+     *      statement3*.forEach(statement -> execute[[statement]]())
+     *      end <:>
+     */
+    @Override
+    public Void visit(IfElse e, Void param){
+        cg.line(e.getLine());
+        cg.comment("* While");
+        String elsePart = cg.getLabel();
+        String end = cg.getLabel();
+        e.getCondition().accept(this.valueCGVisitor,param);
+        cg.convertTo(e.getCondition().getType(), IntType.getInstance());
+        cg.jz(elsePart);
+        for(Statement statement : e.getThenBranch()){
+            statement.accept(this,param);
+        }
+        cg.jmp(end);
+        cg.line(e.getLine());
+        cg.labelID(elsePart);
+        for(Statement statement : e.getElseBranch()){
+            statement.accept(this,param);
+        }
+        cg.line(e.getLine());
+        cg.labelID(end);
         return null;
     }
 

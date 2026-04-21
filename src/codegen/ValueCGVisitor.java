@@ -5,13 +5,17 @@ import ast.expression.binaryOperation.Arithmetic;
 import ast.expression.binaryOperation.Comparison;
 import ast.expression.binaryOperation.Logic;
 import ast.expression.unaryOperation.UnaryNot;
+import ast.type.RecordType;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
 
     private AddressCGVisitor addressCGVisitor;
 
-    public ValueCGVisitor(CodeGenerator codeGenerator, AddressCGVisitor addressCGVisitor) {
+    public ValueCGVisitor(CodeGenerator codeGenerator) {
         this.cg = codeGenerator;
+    }
+
+    public void setAddressCGVisitor(AddressCGVisitor addressCGVisitor) {
         this.addressCGVisitor = addressCGVisitor;
     }
 
@@ -134,6 +138,32 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
     public Void visit(Variable e, Void param) {
         e.accept(addressCGVisitor, null);
         cg.load(e.getDefinition().getType());
+        return null;
+    }
+
+    /**
+     * void value[[ArrayAccess: expression1 -> expression2 expression3]]() =
+     *      address[[expression2]]()
+     *      <load> expression1.type.suffix
+     *
+     */
+    @Override
+    public Void visit(ArrayAccess e, Void param) {
+        e.accept(addressCGVisitor, null);
+        cg.load(e.getType());
+        return null;
+    }
+
+    /**
+     * void value[[FieldAccess: expression1 -> expression2 ID]]() =
+     *      address[[expression2]]()
+     *      <load> expression2.getField(ID).getType.ID
+     */
+    @Override
+    public Void visit(FieldAccess e, Void param) {
+        e.accept(addressCGVisitor, null);
+        RecordType recordType = (RecordType) e.getStructureExpression().getType();
+        cg.load(recordType.getField(e.getFieldAccess()).getFieldType());
         return null;
     }
 }

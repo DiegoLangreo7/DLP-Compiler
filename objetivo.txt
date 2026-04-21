@@ -1,5 +1,5 @@
 Generar codigo para:
-- Indexing
-- FieldAccess
+- Indexing  OK
+- FieldAccess OK
 - While statements
 - If statements
