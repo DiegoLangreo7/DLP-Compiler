@@ -1,11 +1,5 @@
-Generar el codigo MAPL para
-- Programs OK
-- Input statements OK
-- Print statements OK
-- Literals OK
-- Variables OK
-- Assignments OK
-- Arithmetic, comparison and logical expressions OK
-- VarDefinitions (global / local) OK
-- FunDefinitions OK
-- Casts OK
+Generar codigo para:
+- Indexing
+- FieldAccess
+- While statements
+- If statements
