@@ -143,6 +143,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
             FunctionType functionType = (FunctionType) e.getFuncName().getType();
             cg.convertTo(e.getArguments().get(i).getType(), functionType.getReturnType());
         }
+        cg.line(e.getLine());
         cg.call(e.getFuncName().getName());
         return null;
     }

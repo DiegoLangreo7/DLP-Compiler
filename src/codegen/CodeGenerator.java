@@ -375,7 +375,7 @@ public class CodeGenerator {
     }
 
     public void call(String funcName) {
-        out.println("call "+funcName);
+        out.println("\tcall\t"+funcName);
         out.flush();
     }
 
@@ -411,7 +411,7 @@ public class CodeGenerator {
     public void mainInvocation() {
         out.println();
         out.println("' Invocation to the main function");
-        this.call("main");
+        out.println("call main");
         this.halt();
         out.println();
         out.flush();
