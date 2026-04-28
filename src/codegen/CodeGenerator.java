@@ -75,13 +75,44 @@ public class CodeGenerator {
     //           Load and store
     // ==========================================
 
+    /**
+     * loadb, load[i], loadf 		Pop a memory address off the stack (2 bytes).
+     * 					            Then, they push onto the stack the content (1, 2 or 4 bytes) of
+     * 					            the address popped in the previous point
+     */
     public void load(Type type) {
         out.println("\tload"+type.suffix());
         out.flush();
     }
 
+    /**
+     * storeb, store[i], storef 	Pop from the stack 1, 2 or 4 bytes.
+     * 					            Then, they pop from the stack a memory address (2 bytes).
+     * 					            The content of the memory address is replaced with the value
+     * 					            popped in the first step
+     */
     public void store(Type type) {
         out.println("\tstore"+type.suffix());
+        out.flush();
+    }
+
+    // ==========================================
+    //           Popping and duplicating values on the stack
+    // ==========================================
+
+    /**
+     * popb, pop[i], popf 	Pop 1, 2 or 4 bytes, respectively, off the stack
+     */
+    public void pop(Type type) {
+        out.println("\tpop"+type.suffix());
+        out.flush();
+    }
+
+    /**
+     * dupb, dup[i], dupf 	Duplicate the 1, 2 or 4 bytes, respectively, on the top of the stack
+     */
+    public void dup(Type type) {
+        out.println("\tdup"+type.suffix());
         out.flush();
     }
 
@@ -343,6 +374,11 @@ public class CodeGenerator {
         out.flush();
     }
 
+    public void call(String funcName) {
+        out.println("call "+funcName);
+        out.flush();
+    }
+
     /**
      *	enter <int_constant> 	Allocates <int_constant> bytes on the top of the stack
      */
@@ -362,13 +398,21 @@ public class CodeGenerator {
         out.flush();
     }
 
+    /**
+     *  halt Terminates the program execution
+     */
+    public void halt(){
+        out.println("halt");
+        out.flush();
+    }
+
     // Métodos especiales
 
     public void mainInvocation() {
         out.println();
         out.println("' Invocation to the main function");
-        out.println("call main");
-        out.println("halt");
+        this.call("main");
+        this.halt();
         out.println();
         out.flush();
     }
@@ -381,5 +425,4 @@ public class CodeGenerator {
         out.println("\t' "+text);
         out.flush();
     }
-
 }

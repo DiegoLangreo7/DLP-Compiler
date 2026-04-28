@@ -5,6 +5,7 @@ import ast.expression.binaryOperation.Arithmetic;
 import ast.expression.binaryOperation.Comparison;
 import ast.expression.binaryOperation.Logic;
 import ast.expression.unaryOperation.UnaryNot;
+import ast.type.FunctionType;
 import ast.type.RecordType;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
@@ -124,6 +125,25 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
     public Void visit(Cast e, Void param) {
         e.getOperand().accept(this,param);
         cg.convertTo(e.getOperand().getType(),e.getCastType());
+        return null;
+    }
+
+    /**
+     * void value[[Invocation: expression1 -> expression2 expression3*]]() =
+     *      for(int i = 0; i < expression3*.size; i++){
+     *          value[expression3*.get(i)]()
+     *          cg.convertTo(expression3*.get(i).type, expression2.type.parameters.get(i).type)
+     *      }
+     *      <call> expression2.name
+     */
+    @Override
+    public Void visit(Invocation e, Void param){
+        for(int i=0; i<e.getArguments().size();i++){
+            e.getArguments().get(i).accept(this,param);
+            FunctionType functionType = (FunctionType) e.getFuncName().getType();
+            cg.convertTo(e.getArguments().get(i).getType(), functionType.getReturnType());
+        }
+        cg.call(e.getFuncName().getName());
         return null;
     }
 
