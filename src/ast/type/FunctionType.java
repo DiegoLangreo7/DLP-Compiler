@@ -2,7 +2,6 @@ package ast.type;
 
 import ast.Locatable;
 import ast.definition.VariableDefinition;
-import ast.expression.Variable;
 import visitor.Visitor;
 
 import java.util.List;
