@@ -190,6 +190,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
         e.getCondition().accept(this.valueCGVisitor,null);
         cg.convertTo(e.getCondition().getType(), IntType.getInstance());
         cg.jz(end);
+        cg.comment("* While body");
         for(Statement statement : e.getWhileBody()){
             statement.accept(this,param);
         }
@@ -215,18 +216,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     @Override
     public Void visit(IfElse e, FunctionDefinition param){
         cg.line(e.getLine());
-        cg.comment("* While");
+        cg.comment("* If");
         String elsePart = cg.getLabel();
         String end = cg.getLabel();
         e.getCondition().accept(this.valueCGVisitor,null);
         cg.convertTo(e.getCondition().getType(), IntType.getInstance());
         cg.jz(elsePart);
+        cg.comment("* if body");
         for(Statement statement : e.getThenBranch()){
             statement.accept(this,param);
         }
         cg.jmp(end);
         cg.line(e.getLine());
         cg.labelID(elsePart);
+        cg.comment("* else body");
         for(Statement statement : e.getElseBranch()){
             statement.accept(this,param);
         }
