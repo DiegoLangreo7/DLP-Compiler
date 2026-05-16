@@ -34,7 +34,7 @@ public class NumberType extends AbstractType {
 
     @Override
     public Type arithmetic(Locatable locatable) {
-        return super.arithmetic(locatable);
+        return this;
     }
 
     @Override
