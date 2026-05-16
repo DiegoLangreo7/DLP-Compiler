@@ -127,9 +127,9 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
     @Override
     public TR visit(IfElse e, TP param) {
         e.getCondition().accept(this,param);
-        for(Statement statement  : e.getElseBranch())
-            statement.accept(this,param);
         for(Statement statement  : e.getThenBranch())
+            statement.accept(this,param);
+        for(Statement statement  : e.getElseBranch())
             statement.accept(this,param);
         return null;
     }

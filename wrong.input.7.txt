@@ -1,0 +1,100 @@
+// 1. Función void correcta (No debería dar error)
+function f1_void_ok(): void {
+    let a: int;
+    a = 1;
+}
+
+// 2. Función con retorno directo (No debería dar error)
+function f2_simple_ok(): int {
+    return 1;
+}
+
+// 3. Función sin ningún retorno (ERROR)
+function f3_missing_err(): char {
+    let c: char;
+    c = 'a';
+}
+
+// 4. Retorno solo en la rama IF (ERROR)
+function f4_if_only_err(cond: int): number {
+    if (cond > 0) {
+        return 1.0;
+    }
+}
+
+// 5. Retorno solo en la rama ELSE (ERROR)
+function f5_else_only_err(cond: int): number {
+    if (cond > 0) {
+        cond = cond + 1;
+    } else {
+        return 0.0;
+    }
+}
+
+// 6. Retorno en ambas ramas IF y ELSE (No debería dar error)
+function f6_ifelse_ok(cond: int): number {
+    if (cond > 0) {
+        return 1.0;
+    } else {
+        return 0.0;
+    }
+}
+
+// 7. Retorno SOLO dentro de un WHILE (ERROR)
+// ¡Aquí comprobamos que la regla estricta del While funciona!
+function f7_while_err(limit: int): int {
+    let i: int;
+    i = 0;
+    while (i < limit) {
+        return i;
+    }
+}
+
+// 8. Retorno después de un WHILE (No debería dar error)
+function f8_after_while_ok(limit: int): int {
+    let i: int;
+    i = 0;
+    while (i < limit) {
+        i = i + 1;
+    }
+    return i;
+}
+
+// 9. IF-ELSE anidado donde todas las rutas retornan (No debería dar error)
+function f9_nested_ok(a: int, b: int): char {
+    if (a == 1) {
+        return 'A';
+    } else {
+        if (b == 1) {
+            return 'B';
+        } else {
+            return 'C';
+        }
+    }
+}
+
+// 10. IF-ELSE anidado donde falla UNA ruta profunda (ERROR)
+function f10_nested_err(a: int, b: int): char {
+    if (a == 1) {
+        return 'A';
+    } else {
+        if (b == 1) {
+            return 'B';
+        } else {
+            a = 2; 
+        }
+    }
+}
+
+// 11. Retorno válido seguido de código muerto (No debería dar error de HasReturn)
+function f11_dead_code_ok(): int {
+    let a: int;
+    return 10;
+    a = 5; 
+}
+
+// Función principal obligatoria
+function main(): void {
+    let x: int;
+    x = f2_simple_ok();
+}

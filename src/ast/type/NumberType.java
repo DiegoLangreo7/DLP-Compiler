@@ -22,7 +22,7 @@ public class NumberType extends AbstractType {
 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
-        return null;
+        return visitor.visit(this, param);
     }
 
     @Override

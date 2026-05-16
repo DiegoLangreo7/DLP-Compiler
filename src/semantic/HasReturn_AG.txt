@@ -31,26 +31,42 @@ G:
 (30) Program: program 🠖 definition*
 
 A:
-{ statement.hasReturn ∈ Boolean}
+{ statement.hasReturn ∈ Boolean, type.needReturn ∈ Boolean }
 
 R:
 (14) statement.hasReturn = false
-(15) Boolean ifPart = statement₂*.stream().anyMatch(statement::hasReturn);
-     Boolean elsePart = statement₃*.stream().anyMatch(statement::hasReturn);
+(15) Boolean ifPart = false;
+     for (Statement s : statement₂*) {
+        if (s.hasReturn) ifPart = true;
+     }
+     Boolean elsePart = false;
+     if (statement₃* != null && !statement₃*.isEmpty()) {
+        for (Statement s : statement₃*) {
+            if (s.hasReturn) elsePart = true;
+        }
+     }
      statement₁.hasReturn = ifPart && elsePart
 (16) statement.hasReturn = false
 (17) statement.hasReturn = false
 (18) statement.hasReturn = true
-(19) statement₁.hasReturn = statement₂*.stream().anyMatch(statement::hasReturn);
-(28) Boolean hasReturn = false
+(19) statement₁.hasReturn = false
+(21) type.needReturn = true
+(22) type₁.needReturn = type₂.needReturn
+(23) type.needReturn = true
+(24) type.needReturn = true
+(27) type.needReturn = false
+(28) Boolean needReturn = type.needReturn;
+     Boolean hasReturn = false;
      for(Statement s : statement* ) {
-         if(s.hasReturn) {
-             hasReturn = true
-         }
-     }
-     if(!hasReturn) {
-        System.out.println("Missing return statement")
-     }
+        if(!(s instanceof VariableDefinition)) {
+            if(s.hasReturn) {
+                hasReturn = true;
+            }
+        }
+    }
+    if(needReturn != null && needReturn && !hasReturn) {
+        new ErrorType("In the function " + ID + " not all code paths return a value");
+    }
 
 
 
