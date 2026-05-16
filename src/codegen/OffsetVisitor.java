@@ -8,8 +8,6 @@ import ast.type.RecordField;
 import ast.type.RecordType;
 import visitor.AbstractVisitor;
 
-import java.util.Collections;
-
 public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
 
     private int globalBytesSum = 0;
@@ -65,11 +63,9 @@ public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
     // Necesario para recorrer los parámetros al revés
     @Override
     public Void visit(FunctionType e, Boolean param) {
-
-        Collections.reverse(e.getParameters());
-
-        for(VariableDefinition variableDefinition  : e.getParameters())
-            variableDefinition.accept(this,param);
+        for (int i = e.getParameters().size() - 1; i >= 0; i--) {
+            e.getParameters().get(i).accept(this, param);
+        }
         return null;
     }
 

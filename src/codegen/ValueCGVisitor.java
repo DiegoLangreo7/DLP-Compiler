@@ -9,6 +9,7 @@ import ast.expression.unaryOperation.UnaryNot;
 import ast.type.FunctionType;
 import ast.type.IntType;
 import ast.type.RecordType;
+import ast.type.Type;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
 
@@ -158,10 +159,11 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(Invocation e, Void param){
-        for(int i=0; i<e.getArguments().size();i++){
-            e.getArguments().get(i).accept(this,param);
-            FunctionType functionType = (FunctionType) e.getFuncName().getType();
-            cg.convertTo(e.getArguments().get(i).getType(), functionType.getReturnType());
+        FunctionType functionType = (FunctionType) e.getFuncName().getType();
+        for(int i = 0; i < e.getArguments().size(); i++){
+            e.getArguments().get(i).accept(this, param);
+            Type paramType = functionType.getParameters().get(i).getType();
+            cg.convertTo(e.getArguments().get(i).getType(), paramType);
         }
         cg.line(e.getLine());
         cg.call(e.getFuncName().getName());
@@ -190,7 +192,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(ArrayAccess e, Void param) {
-        e.getArray().accept(addressCGVisitor, null);
+        e.accept(addressCGVisitor, null);
         cg.load(e.getType());
         return null;
     }
