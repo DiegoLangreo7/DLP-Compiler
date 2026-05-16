@@ -52,7 +52,7 @@ halt
 	storeb
 
 #line	22
-	' * While
+	' * If
 	push	bp
 	pushi	4
 	addi
@@ -60,6 +60,7 @@ halt
 	pushi	256
 	lti
 	jz label0
+	' * if body
 
 #line	23
 	' * Assignment
@@ -89,6 +90,7 @@ halt
 #line	22
 
  label0:
+	' * else body
 
 #line	27
 	' * Assignment
@@ -185,6 +187,7 @@ halt
 	pushi	8
 	lti
 	jz label3
+	' * While body
 
 #line	38
 	' * Assignment
@@ -399,6 +402,7 @@ halt
 	pushi	8
 	lti
 	jz label5
+	' * While body
 
 #line	62
 	' * Write
@@ -566,6 +570,7 @@ halt
 	pushi	2
 	lti
 	jz label7
+	' * While body
 
 #line	73
 	' * Assignment
@@ -588,6 +593,7 @@ halt
 	pushi	2
 	lti
 	jz label9
+	' * While body
 
 #line	75
 	' * Assignment
@@ -678,6 +684,7 @@ halt
 	pushi	2
 	lti
 	jz label11
+	' * While body
 
 #line	83
 	' * Assignment
@@ -700,6 +707,7 @@ halt
 	pushi	2
 	lti
 	jz label13
+	' * While body
 
 #line	86
 	' * Write
