@@ -46,15 +46,15 @@ public class IntType extends AbstractType{
 
     @Override
     public Type comparison(Type type, Locatable locatable) {
-        if (this == type)
-            return this;
+        if (type == this || type == CharType.getInstance() || type == NumberType.getInstance())
+            return IntType.getInstance();
         return super.comparison(type, locatable);
     }
 
     @Override
     public Type logic(Type type, Locatable locatable) {
         if (this == type || type == CharType.getInstance())
-            return type;
+            return this;
         return super.logic(type, locatable);
     }
 
