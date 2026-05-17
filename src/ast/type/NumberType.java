@@ -39,7 +39,7 @@ public class NumberType extends AbstractType {
 
     @Override
     public Type comparison(Type type, Locatable locatable) {
-        if (this == type)
+        if (type == this || type == IntType.getInstance() || type == CharType.getInstance())
             return IntType.getInstance();
         return super.comparison(type, locatable);
     }
