@@ -129,7 +129,7 @@ expression returns [Expression ast] locals [List<Expression> params = new ArrayL
           | e1 = expression OP = ( '+' | '-' ) e2 = expression // BinaryArithmetic
             { $ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $OP.text, $e2.ast); }
 
-          | e1 = expression OP = ( '>' | '>=' | '>' | '>=' | '<' | '<=' | '!=' | '==' ) e2 = expression // Comparison
+          | e1 = expression OP = ( '>' | '>=' | '<' | '<=' | '!=' | '==' ) e2 = expression // Comparison
             { $ast = new Comparison($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $OP.text, $e2.ast); }
 
           | e1 = expression OP = ( '&&' | '||' ) e2 = expression // Logic
