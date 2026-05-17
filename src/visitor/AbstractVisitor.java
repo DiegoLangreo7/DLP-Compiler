@@ -84,6 +84,14 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
     }
 
     @Override
+    public TR visit(TernaryOperator e, TP param) {
+        e.getCondition().accept(this,param);
+        e.getOptLeft().accept(this,param);
+        e.getOptRight().accept(this,param);
+        return null;
+    }
+
+    @Override
     public TR visit(CharLiteral e, TP param) {
         return null;
     }

@@ -41,6 +41,7 @@ public interface Visitor <TP,TR> {
     TR visit (Invocation e, TP param);
     TR visit (NumberLiteral e, TP param);
     TR visit (Variable e, TP param);
+    TR visit (TernaryOperator e, TP param);
 
     //Statement
     TR visit (Assignment e, TP param);

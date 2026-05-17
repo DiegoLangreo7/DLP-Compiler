@@ -43,6 +43,11 @@ public abstract class AbstractType implements Type{
     }
 
     @Override
+    public Type ternary(Type type, Locatable locatable){
+        return new ErrorType("An ternary operator cannot be done for type " + this, locatable);
+    }
+
+    @Override
     public void mustPromotesTo(Type type, Locatable locatable) {
         if (type instanceof ErrorType)
             return;

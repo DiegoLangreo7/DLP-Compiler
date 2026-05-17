@@ -83,6 +83,11 @@ public abstract class AbstractCGVisitor<TP,TR> implements Visitor<TP,TR> {
     }
 
     @Override
+    public TR visit(TernaryOperator e, TP param) {
+        throw new UnsupportedOperationException(e.toString() + "don't support that visitor operation");
+    }
+
+    @Override
     public TR visit(Invocation e, TP param) {
         throw new UnsupportedOperationException(e.toString() + "don't support that visitor operation");
     }

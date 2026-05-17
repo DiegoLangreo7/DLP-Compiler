@@ -40,6 +40,16 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     }
 
     @Override
+    public Void visit(TernaryOperator e, Type param) {
+        e.getCondition().accept(this,param);
+        e.getOptLeft().accept(this,param);
+        e.getOptRight().accept(this,param);
+        e.getCondition().getType().mustBeLogical(e);
+        e.setType(e.getOptLeft().getType().ternary(e.getOptRight().getType(), e));
+        return null;
+    }
+
+    @Override
     public Void visit(Logic e, Type param) {
         e.getLeft().accept(this,param);
         e.getRight().accept(this,param);

@@ -45,6 +45,16 @@ public class NumberType extends AbstractType {
     }
 
     @Override
+    public Type ternary(Type type, Locatable locatable){
+        if(type == CharType.getInstance() ||  type == IntType.getInstance() || this == type){
+            return this;
+        }
+        else{
+            return super.ternary(type, locatable);
+        }
+    }
+
+    @Override
     public void mustPromotesTo(Type type, Locatable locatable) {
         if (type == this)
             return;

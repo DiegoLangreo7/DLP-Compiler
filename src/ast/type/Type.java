@@ -13,6 +13,7 @@ public interface Type extends ASTNode {
     Type comparison(Type type, Locatable locatable);
     Type logic(Type type, Locatable locatable);
     Type logic(Locatable locatable);
+    Type ternary(Type type, Locatable locatable);
     void mustPromotesTo(Type type, Locatable locatable);
     void mustBeBuiltIn(Locatable locatable);
     Type squareBrackets(Type type, Locatable locatable);

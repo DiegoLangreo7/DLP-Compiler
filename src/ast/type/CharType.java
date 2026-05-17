@@ -44,7 +44,25 @@ public class CharType extends AbstractType {
     public Type comparison(Type type, Locatable locatable) {
         if (this == type || type == IntType.getInstance())
             return IntType.getInstance();
+        else if (type == NumberType.getInstance())
+            return NumberType.getInstance();
         return super.comparison(type, locatable);
+    }
+
+    @Override
+    public Type ternary(Type type, Locatable locatable){
+        if(this == type){
+            return this;
+        }
+        else if(type == IntType.getInstance()){
+            return IntType.getInstance();
+        }
+        else if(type == NumberType.getInstance()){
+            return NumberType.getInstance();
+        }
+        else{
+            return super.ternary(type, locatable);
+        }
     }
 
     @Override

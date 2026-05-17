@@ -150,6 +150,32 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
     }
 
     /**
+     * void value[[TernaryOperator: expression1 -> expression2 expression3 expression4]]() =
+     *      String end = cg.getLabel()
+     *      String falseCase = cg.getLabel()
+     *      value[[expression2]]()
+     *      <jz> falseCase
+     *      value[[expression3]]()
+     *      <jmp> end
+     *      falseCase <:>
+     *      value[[expression4]]()
+     *      end <:>
+     */
+    @Override
+    public Void visit(TernaryOperator e, Void param) {
+        String end = cg.getLabel();
+        String falseCase = cg.getLabel();
+        e.getCondition().accept(this,param);
+        cg.jz(falseCase);
+        e.getOptLeft().accept(this,param);
+        cg.jmp(end);
+        cg.labelID(falseCase);
+        e.getOptRight().accept(this,param);
+        cg.labelID(end);
+        return null;
+    }
+
+    /**
      * void value[[Invocation: expression1 -> expression2 expression3*]]() =
      *      for(int i = 0; i < expression3*.size; i++){
      *          value[expression3*.get(i)]()

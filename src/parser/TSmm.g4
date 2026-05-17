@@ -134,6 +134,9 @@ expression returns [Expression ast] locals [List<Expression> params = new ArrayL
 
           | e1 = expression OP = ( '&&' | '||' ) e2 = expression // Logic
             { $ast = new Logic($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $OP.text, $e2.ast); }
+
+          | e1 = expression '?' e2 = expression ':' e3 = expression // Ternary Operator
+            { $ast = new TernaryOperator($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast, $e3.ast);}
           ;
 
 // ----- REGLAS LEXICAS ------
