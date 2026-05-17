@@ -78,9 +78,12 @@ halt
 	storei
 
 #line	11
-	' * DoWhile
+	' * Do While
+
+#line	11
 
  label0:
+	' * Do While body
 
 #line	12
 	' * Write
@@ -233,9 +236,12 @@ halt
 	storei
 
 #line	26
-	' * DoWhile
+	' * Do While
+
+#line	26
 
  label1:
+	' * Do While body
 
 #line	27
 	' * Write

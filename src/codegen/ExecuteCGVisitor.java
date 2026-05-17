@@ -206,16 +206,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
      *      body <:>
      *      statement2*.forEach(statement -> execute[[statement]]())
      *      value[[expression]]()
+     *      cg.convertTo(expression.type,IntType)
      *      <jnz> body
      */
     @Override
     public Void visit(DoWhile e, FunctionDefinition param){
         cg.line(e.getLine());
-        cg.comment("* DoWhile");
+        cg.comment("* Do While");
         String body = cg.getLabel();
+        cg.line(e.getLine());
         cg.labelID(body);
+        cg.comment("* Do While body");
         e.getBody().forEach(statement->statement.accept(this,param));
         e.getCondition().accept(this.valueCGVisitor,null);
+        cg.convertTo(e.getCondition().getType(), IntType.getInstance());
         cg.jnz(body);
         return null;
     }
