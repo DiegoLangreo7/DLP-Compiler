@@ -69,6 +69,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          | FS = 'while' '(' expression ')' body
            { $ast.add(new While($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast, $body.ast)); }
 
+         | FS = 'for' '(' init = simpleStatement ';' cond = expression ';' incr = simpleStatement ')' body
+            {$ast.add(new For($FS.getLine(), $FS.getCharPositionInLine()+1, $init.ast, $cond.ast, $incr.ast, $body.ast));}
+
          | FS = 'return' expression ';'
            { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast)); }
 
@@ -82,6 +85,14 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
       '{' ( statement { $ast.addAll($statement.ast); })* '}'
     | statement { $ast.addAll($statement.ast); }
+    ;
+
+simpleStatement returns [Statement ast]:
+      e1 = expression '=' e2 = expression
+      { if ($e1.ast != null && $e2.ast != null) $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
+
+    | invocation
+      { $ast = $invocation.ast; }
     ;
 
 invocation returns [Invocation ast] locals [List<Expression> params = new ArrayList<Expression>()]:

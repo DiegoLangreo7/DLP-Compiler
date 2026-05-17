@@ -201,6 +201,38 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     }
 
     /**
+     * execute[[For: statement1-> statement2 expression statement3 statement4*]]()=
+     *      String condition = cg.getLabel()
+     *      String end = cg.getLabel()
+     *      execute[[statement2]]()
+     *      condition <:>
+     *      value[[expression]]()
+     *      cg.convertTo(expression.type,IntType)
+     *      <jz> end
+     *      statement4*.forEach(statement -> execute[[statement]]()
+     *      execute[[statement3]]*
+     *      <jmp> condition
+     *      end <:>
+     */
+    @Override
+    public Void visit(For e, FunctionDefinition param){
+        cg.line(e.getLine());
+        cg.comment("* For");
+        String condition = cg.getLabel();
+        String end = cg.getLabel();
+        e.getInitialization().accept(this,param);
+        cg.labelID(condition);
+        e.getCondition().accept(this.valueCGVisitor,null);
+        cg.convertTo(e.getCondition().getType(), IntType.getInstance());
+        cg.jz(end);
+        e.getBody().forEach(statement -> statement.accept(this,param));
+        e.getIncrement().accept(this,param);
+        cg.jmp(condition);
+        cg.labelID(end);
+        return null;
+    }
+
+    /**
      *  execute[[IfElse: statement1 -> expression statement2* statement3*^]]() =
      *      String else = cg.getLabel()
      *      String end = cg.getLabel()

@@ -1,109 +1,17 @@
-let global_offset: number;
-let database: [3] [
-    let id: int;
-    let active: char;
-    let scores: [2] int;
-];
-
-// Función para calcular potencias (prueba paso de floats y bucles)
-function power(base: number, exp: int): number {
-    let result: number;
-    let i: int;
-    result = 1.0;
-    i = 0;
-    while (i < exp) {
-        result = result * base;
-        i = i + 1;
-    }
-    return result;
-}
-
-// Función para comprobar si un número es primo (prueba booleanos int, modulos y retornos tempranos simulados)
-function isPrime(n: int): int {
-    let i: int;
-    let is_prime: int;
-    is_prime = 1;
-
-    if (n <= 1)
-        is_prime = 0;
-    else {
-        i = 2;
-        while (i * i <= n && is_prime == 1) {
-            if (n % i == 0)
-                is_prime = 0;
-            i = i + 1;
-        }
-    }
-    return is_prime;
-}
-
-// Procedimiento para imprimir un separador decorativo
-function printSeparator(c: char, length: int): void {
-    let i: int;
-    i = 0;
-    while (i < length) {
-        log c;
-        i = i + 1;
-    }
-    log '\n';
-}
-
 function main(): void {
-    let i, j: int;
-    let tempScore: number;
-    let testChar: char;
-    let global_offset: int; // SHADOWING: Oculta la global de tipo number
+    let i: int;
+    let suma: int;
 
-    global_offset = 100;
+    suma = 0;
 
-    // 1. Inicialización de la base de datos
-    i = 0;
-    while (i < 3) {
-        database[i].id = i + global_offset;
+    log 'I', 'N', 'I', 'C', 'I', 'O', '\n';
 
-        if (isPrime(database[i].id))
-            database[i].active = 'Y';
-        else
-            database[i].active = 'N';
-
-        j = 0;
-        while (j < 2) {
-            database[i].scores[j] = (database[i].id - 90) * (j + 1) * 5;
-            j = j + 1;
-        }
-        i = i + 1;
+    // Prueba de fuego del bucle for
+    for (i = 0; i < 5; i = i + 1) {
+        log 'i', ':', i, '\n';
+        suma = suma + i;
     }
 
-    printSeparator('-', 15);
-
-    // 2. Procesamiento y lógicas de casting
-    i = 0;
-    while (i < 3) {
-        log 'I', 'D', ':', database[i].id, ' ', 'A', 'c', 't', ':', database[i].active, '\n';
-
-        tempScore = (database[i].scores[0] as number) + (database[i].scores[1] as number);
-        tempScore = tempScore / 2.0;
-
-        log 'A', 'v', 'g', ':', tempScore, '\n';
-        log 'P', 'W', 'R', ':', power(tempScore, 2), '\n';
-
-        // Criterio de pase: Media > 80 y Activo == 'Y' (89 en ASCII)
-        if (!(tempScore <= 80.0) && database[i].active == 'Y') {
-            log 'P', 'A', 'S', 'S', '\n';
-        } else {
-            log 'F', 'A', 'I', 'L', '\n';
-        }
-
-        printSeparator('*', 5);
-        i = i + 1;
-    }
-
-    // 3. Pruebas de fuego matemáticas al vuelo
-    log 'M', 'A', 'T', 'H', '\n';
-    testChar = '0'; // ASCII 48
-
-    // Debería imprimir: 0 53 1
-    log -5 * 2 + 10, ' ',
-        (testChar as int) + 5, ' ',
-        (10.5 as int) % 3, '\n';
+    log 'S', 'U', 'M', 'A', ':', suma, '\n';
+    log 'F', 'I', 'N', '\n';
 }
