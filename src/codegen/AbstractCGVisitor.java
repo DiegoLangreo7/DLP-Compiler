@@ -128,6 +128,11 @@ public abstract class AbstractCGVisitor<TP,TR> implements Visitor<TP,TR> {
     }
 
     @Override
+    public TR visit(DoWhile e, TP param) {
+        throw new UnsupportedOperationException(e.toString() + "don't support that visitor operation");
+    }
+
+    @Override
     public TR visit(ArrayType e, TP param) {
         throw new UnsupportedOperationException(e.toString() + "don't support that visitor operation");
     }

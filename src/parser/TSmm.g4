@@ -69,6 +69,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          | FS = 'while' '(' expression ')' body
            { $ast.add(new While($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast, $body.ast)); }
 
+         | FS = 'do' body 'while' '(' expression ')'
+            { $ast.add(new DoWhile($FS.getLine(), $FS.getCharPositionInLine()+1, $body.ast, $expression.ast)); }
+
          | FS = 'return' expression ';'
            { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast)); }
 

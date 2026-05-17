@@ -167,4 +167,13 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         return null;
     }
 
+    @Override
+    public Void visit(DoWhile e, Type param) {
+        for(Statement statement  : e.getBody())
+            statement.accept(this,param);
+        e.getCondition().accept(this,param);
+        e.getCondition().getType().mustBeLogical(e);
+        return null;
+    }
+
 }
