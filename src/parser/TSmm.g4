@@ -26,7 +26,7 @@ variableDefinition returns [List<VariableDefinition> ast = new ArrayList<Variabl
     ;
 
 functionDefinition returns [FunctionDefinition ast] locals [List<VariableDefinition> params = new ArrayList<VariableDefinition>(), List<Statement> funcBody = new ArrayList<Statement>(), Type returnType]:
-    FS = 'function' FUNCNAME = ID '(' ( ID1 = ID ':' t1 = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$ID1.text, $t1.ast));} ( ',' IDL = ID ':' tl = type { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$IDL.text, $tl.ast));})* )? ')' ':' ( (rType = type {$returnType = $rType.ast;}) | 'void' {$returnType = VoidType.getInstance();}) '{' (variableDefinition { $funcBody.addAll($variableDefinition.ast);})* ( statement { $funcBody.addAll($statement.ast); })* '}'
+    FS = 'function' FUNCNAME = ID '(' ( ID1 = ID ':' t1 = simpleType { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$ID1.text, $t1.ast));} ( ',' IDL = ID ':' tl = simpleType { $params.add( new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1,$IDL.text, $tl.ast));})* )? ')' ':' ( (rType = simpleType {$returnType = $rType.ast;}) | 'void' {$returnType = VoidType.getInstance();}) '{' (variableDefinition { $funcBody.addAll($variableDefinition.ast);})* ( statement { $funcBody.addAll($statement.ast); })* '}'
     { $ast = new FunctionDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, $FUNCNAME.text, new FunctionType($returnType, $params ), $funcBody); }
     ;
 
@@ -72,12 +72,16 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          | FS = 'return' expression ';'
            { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast)); }
 
-         | invocation ';'
-           { $ast.add($invocation.ast); }
-
-         | e1 = expression '=' e2 = expression ';'
-           { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
+         | simpleStatement ';'
+           { $ast.add($simpleStatement.ast); }
          ;
+
+simpleStatement returns [Statement ast]:
+    e1 = expression '=' e2 = expression
+    { if ($e1.ast != null && $e2.ast != null) $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
+  | invocation
+    { $ast = $invocation.ast; }
+  ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
       '{' ( statement { $ast.addAll($statement.ast); })* '}'
