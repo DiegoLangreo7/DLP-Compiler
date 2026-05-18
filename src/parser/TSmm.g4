@@ -72,16 +72,12 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          | FS = 'return' expression ';'
            { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast)); }
 
-         | simpleStatement ';'
-           { $ast.add($simpleStatement.ast); }
-         ;
+         | invocation ';'
+           { $ast.add($invocation.ast); }
 
-simpleStatement returns [Statement ast]:
-    e1 = expression '=' e2 = expression
-    { if ($e1.ast != null && $e2.ast != null) $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
-  | invocation
-    { $ast = $invocation.ast; }
-  ;
+         | e1 = expression '=' e2 = expression ';'
+           { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
+         ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
       '{' ( statement { $ast.addAll($statement.ast); })* '}'
@@ -176,4 +172,3 @@ ONE_LINE_COMMENT: '//' .*? ('\n' | EOF)
 fragment
 MULTI_LINE_COMMENT: '/*' .*? '*/'
                   ;
-
