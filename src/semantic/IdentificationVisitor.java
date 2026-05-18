@@ -3,11 +3,12 @@ package semantic;
 import ast.definition.FunctionDefinition;
 import ast.definition.VariableDefinition;
 import ast.expression.Variable;
+import ast.statement.IfElse;
 import ast.statement.Statement;
+import ast.statement.While;
 import ast.type.ErrorType;
 import ast.type.RecordField;
 import ast.type.RecordType;
-import errorhandler.ErrorHandler;
 import symboltable.SymbolTable;
 import visitor.AbstractVisitor;
 
@@ -25,8 +26,10 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
         }
         st.set();
         e.getType().accept(this,param);
+        st.set();
         for(Statement statement : e.getFuncBody())
             statement.accept(this,param);
+        st.reset();
         st.reset();
         return null;
     }
@@ -65,6 +68,28 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
         return null;
     }
 
+    @Override
+    public Void visit(IfElse e, Void param) {
+        e.getCondition().accept(this,param);
+        st.set();
+        for(Statement statement  : e.getThenBranch())
+            statement.accept(this,param);
+        st.reset();
+        st.set();
+        for(Statement statement  : e.getElseBranch())
+            statement.accept(this,param);
+        st.reset();
+        return null;
+    }
 
+    @Override
+    public Void visit(While e, Void param) {
+        e.getCondition().accept(this,param);
+        st.set();
+        for(Statement statement  : e.getWhileBody())
+            statement.accept(this,param);
+        st.reset();
+        return null;
+    }
 
 }
