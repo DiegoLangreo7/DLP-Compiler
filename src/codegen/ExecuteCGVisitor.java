@@ -102,9 +102,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     public Void visit(Return e, FunctionDefinition param){
         cg.line(e.getLine());
         cg.comment("* Return");
-        e.getReturnValue().accept(this.valueCGVisitor,null);
+        if(e.getReturnValue()!=null) {
+            e.getReturnValue().accept(this.valueCGVisitor, null);
+        }
         FunctionType functionType = (FunctionType) param.getType();
-        cg.convertTo(e.getReturnValue().getType(), functionType.getReturnType());
+        if(e.getReturnValue()!=null){
+            cg.convertTo(e.getReturnValue().getType(), functionType.getReturnType());
+        }
         cg.ret(functionType.getReturnType().getNumberOfBytes(), param.getLocalBytesSum(), param.getParamBytesSum());
         return null;
     }

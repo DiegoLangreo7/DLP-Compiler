@@ -1,5 +1,6 @@
 package ast.type;
 
+import ast.Locatable;
 import visitor.Visitor;
 
 public class VoidType extends AbstractType {
@@ -23,5 +24,17 @@ public class VoidType extends AbstractType {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public void mustPromotesTo(Type type, Locatable locatable) {
+        if (type == this)
+            return;
+        new ErrorType("Type " + this + " cannot promotes to type " + type, locatable);
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        return 0;
     }
 }

@@ -153,8 +153,12 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 
     @Override
     public Void visit(Return e, Type param) {
-        e.getReturnValue().accept(this,param);
-        e.getReturnValue().getType().mustPromotesTo(param, e);
+        if(e.getReturnValue()!=null) {
+            e.getReturnValue().accept(this, param);
+            e.getReturnValue().getType().mustPromotesTo(param, e);
+        }else{
+            VoidType.getInstance().mustPromotesTo(param,e);
+        }
         return null;
     }
 

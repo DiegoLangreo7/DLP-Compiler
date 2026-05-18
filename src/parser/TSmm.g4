@@ -58,7 +58,7 @@ simpleType returns [Type ast]:
     { $ast = CharType.getInstance(); }
   ;
 
-statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [List<Statement> else = new ArrayList<Statement>()]:
+statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [List<Statement> else = new ArrayList<Statement>(), Expression returnVoid]:
            FS = 'log' e1 = expression { $ast.add(new Log($FS.getLine(), $FS.getCharPositionInLine()+1,$e1.ast));} ( ',' el = expression { $ast.add(new Log($FS.getLine(), $FS.getCharPositionInLine()+1,$el.ast));})* ';'
 
          | FS = 'input' e1 = expression { $ast.add(new Input($FS.getLine(), $FS.getCharPositionInLine()+1,$e1.ast));}( ',' el = expression { $ast.add(new Input($FS.getLine(), $FS.getCharPositionInLine()+1,$el.ast));} )* ';'
@@ -69,8 +69,8 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          | FS = 'while' '(' expression ')' body
            { $ast.add(new While($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast, $body.ast)); }
 
-         | FS = 'return' expression ';'
-           { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast)); }
+         | FS = 'return' (expression {$returnVoid = $expression.ast;})? ';'
+           { $ast.add(new Return($FS.getLine(), $FS.getCharPositionInLine()+1, $returnVoid)); }
 
          | invocation ';'
            { $ast.add($invocation.ast); }

@@ -1,955 +1,248 @@
 
 #source	"input.txt"
 
-	' * real global_offset (offset 0)
-	' * ArrayType[of:RecordType[fields: Field[name:id, type:int, offset:0], Field[name:active, type:char, offset:2], Field[name:scores, type:ArrayType[of:int,size:2], offset:3]],size:3] database (offset 4)
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line	9
+#line	1
 
- power:
+ testReturnVacio:
 	' * Parameters
-	' * int exp (offset 4)
-	' * real base (offset 6)
+	' * int cortar (offset 4)
 	' * Local variables
-	' * real result (offset -4)
-	' * int i (offset -6)
-	enter	6
+	enter	0
 
-#line	12
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	pushf	1.0
-	storef
-
-#line	13
-	' * Assignment
-	push	bp
-	pushi	-6
-	addi
-	pushi	0
-	storei
-
-#line	14
-	' * While
-
-#line	14
-
- label0:
-	push	bp
-	pushi	-6
-	addi
-	loadi
-	push	bp
-	pushi	4
-	addi
-	loadi
-	lti
-	jz label1
-	' * While body
-
-#line	15
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	push	bp
-	pushi	-4
-	addi
-	loadf
-	push	bp
-	pushi	6
-	addi
-	loadf
-	mulf
-	storef
-
-#line	16
-	' * Assignment
-	push	bp
-	pushi	-6
-	addi
-	push	bp
-	pushi	-6
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label0
-
-#line	14
-
- label1:
-
-#line	18
-	' * Return
-	push	bp
-	pushi	-4
-	addi
-	loadf
-	ret	4, 6, 6
-
-#line	22
-
- isPrime:
-	' * Parameters
-	' * int n (offset 4)
-	' * Local variables
-	' * int i (offset -2)
-	' * int is_prime (offset -4)
-	enter	4
-
-#line	25
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	pushi	1
-	storei
-
-#line	27
-	' * If
-	push	bp
-	pushi	4
-	addi
-	loadi
-	pushi	1
-	lei
-	jz label2
-	' * if body
-
-#line	28
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	pushi	0
-	storei
-	jmp label3
-
-#line	27
-
- label2:
-	' * else body
-
-#line	30
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	pushi	2
-	storei
-
-#line	31
-	' * While
-
-#line	31
-
- label4:
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	muli
-	push	bp
-	pushi	4
-	addi
-	loadi
-	lei
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	pushi	1
-	eqi
-	and
-	jz label5
-	' * While body
-
-#line	32
-	' * If
-	push	bp
-	pushi	4
-	addi
-	loadi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	modi
-	pushi	0
-	eqi
-	jz label6
-	' * if body
-
-#line	33
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	pushi	0
-	storei
-	jmp label7
-
-#line	32
-
- label6:
-	' * else body
-
-#line	32
-
- label7:
-
-#line	34
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label4
-
-#line	31
-
- label5:
-
-#line	27
-
- label3:
-
-#line	37
-	' * Return
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	ret	2, 4, 2
-
-#line	41
-
- printSeparator:
-	' * Parameters
-	' * int length (offset 4)
-	' * char c (offset 6)
-	' * Local variables
-	' * int i (offset -2)
-	enter	2
-
-#line	43
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	pushi	0
-	storei
-
-#line	44
-	' * While
-
-#line	44
-
- label8:
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	push	bp
-	pushi	4
-	addi
-	loadi
-	lti
-	jz label9
-	' * While body
-
-#line	45
-	' * Write
-	push	bp
-	pushi	6
-	addi
-	loadb
-	outb
-
-#line	46
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label8
-
-#line	44
-
- label9:
-
-#line	48
-	' * Write
-	pushb	10
-	outb
-	ret	0, 2, 3
-
-#line	51
-
- main:
-	' * Parameters
-	' * Local variables
-	' * int i (offset -2)
-	' * int j (offset -4)
-	' * real tempScore (offset -8)
-	' * char testChar (offset -9)
-	' * int global_offset (offset -11)
-	enter	11
-
-#line	57
-	' * Assignment
-	push	bp
-	pushi	-11
-	addi
-	pushi	100
-	storei
-
-#line	60
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	pushi	0
-	storei
-
-#line	61
-	' * While
-
-#line	61
-
- label10:
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	3
-	lti
-	jz label11
-	' * While body
-
-#line	62
-	' * Assignment
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	0
-	addi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	push	bp
-	pushi	-11
-	addi
-	loadi
-	addi
-	storei
-
-#line	64
-	' * If
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	0
-	addi
-	loadi
-
-#line	64
-	call	isPrime
-	jz label12
-	' * if body
-
-#line	65
-	' * Assignment
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	2
-	addi
-	pushb	89
-	storeb
-	jmp label13
-
-#line	64
-
- label12:
-	' * else body
-
-#line	67
-	' * Assignment
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	2
-	addi
-	pushb	78
-	storeb
-
-#line	64
-
- label13:
-
-#line	69
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	pushi	0
-	storei
-
-#line	70
-	' * While
-
-#line	70
-
- label14:
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	pushi	2
-	lti
-	jz label15
-	' * While body
-
-#line	71
-	' * Assignment
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	3
-	addi
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	pushi	2
-	muli
-	addi
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	0
-	addi
-	loadi
-	pushi	90
-	subi
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	pushi	1
-	addi
-	muli
-	pushi	5
-	muli
-	storei
-
-#line	72
-	' * Assignment
-	push	bp
-	pushi	-4
-	addi
-	push	bp
-	pushi	-4
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label14
-
-#line	70
-
- label15:
-
-#line	74
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label10
-
-#line	61
-
- label11:
-	pushb	45
-	pushi	15
-
-#line	77
-	call	printSeparator
-
-#line	80
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	pushi	0
-	storei
-
-#line	81
-	' * While
-
-#line	81
-
- label16:
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	3
-	lti
-	jz label17
-	' * While body
-
-#line	82
+#line	2
 	' * Write
 	pushb	73
 	outb
 
-#line	82
+#line	2
+	' * Write
+	pushb	78
+	outb
+
+#line	2
+	' * Write
+	pushb	73
+	outb
+
+#line	2
+	' * Write
+	pushb	67
+	outb
+
+#line	2
+	' * Write
+	pushb	73
+	outb
+
+#line	2
+	' * Write
+	pushb	79
+	outb
+
+#line	2
+	' * Write
+	pushb	10
+	outb
+
+#line	4
+	' * If
+	push	bp
+	pushi	4
+	addi
+	loadi
+	pushi	1
+	eqi
+	jz label0
+	' * if body
+
+#line	5
+	' * Write
+	pushb	65
+	outb
+
+#line	5
 	' * Write
 	pushb	68
 	outb
 
-#line	82
-	' * Write
-	pushb	58
-	outb
-
-#line	82
-	' * Write
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	0
-	addi
-	loadi
-	outi
-
-#line	82
-	' * Write
-	pushb	32
-	outb
-
-#line	82
-	' * Write
-	pushb	65
-	outb
-
-#line	82
-	' * Write
-	pushb	99
-	outb
-
-#line	82
-	' * Write
-	pushb	116
-	outb
-
-#line	82
-	' * Write
-	pushb	58
-	outb
-
-#line	82
-	' * Write
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	2
-	addi
-	loadb
-	outb
-
-#line	82
-	' * Write
-	pushb	10
-	outb
-
-#line	84
-	' * Assignment
-	push	bp
-	pushi	-8
-	addi
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	3
-	addi
-	pushi	0
-	pushi	2
-	muli
-	addi
-	loadi
-	i2f
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	3
-	addi
-	pushi	1
-	pushi	2
-	muli
-	addi
-	loadi
-	i2f
-	addf
-	storef
-
-#line	85
-	' * Assignment
-	push	bp
-	pushi	-8
-	addi
-	push	bp
-	pushi	-8
-	addi
-	loadf
-	pushf	2.0
-	divf
-	storef
-
-#line	87
-	' * Write
-	pushb	65
-	outb
-
-#line	87
-	' * Write
-	pushb	118
-	outb
-
-#line	87
-	' * Write
-	pushb	103
-	outb
-
-#line	87
-	' * Write
-	pushb	58
-	outb
-
-#line	87
-	' * Write
-	push	bp
-	pushi	-8
-	addi
-	loadf
-	outf
-
-#line	87
-	' * Write
-	pushb	10
-	outb
-
-#line	88
-	' * Write
-	pushb	80
-	outb
-
-#line	88
-	' * Write
-	pushb	87
-	outb
-
-#line	88
-	' * Write
-	pushb	82
-	outb
-
-#line	88
-	' * Write
-	pushb	58
-	outb
-
-#line	88
-	' * Write
-	push	bp
-	pushi	-8
-	addi
-	loadf
-	pushi	2
-
-#line	88
-	call	power
-	outf
-
-#line	88
-	' * Write
-	pushb	10
-	outb
-
-#line	91
-	' * If
-	push	bp
-	pushi	-8
-	addi
-	loadf
-	f2i
-	pushf	80.0
-	f2i
-	lei
-	not
-	pusha	4
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	7
-	muli
-	addi
-	pushi	2
-	addi
-	loadb
-	b2i
-	pushb	89
-	b2i
-	eqi
-	and
-	jz label18
-	' * if body
-
-#line	92
-	' * Write
-	pushb	80
-	outb
-
-#line	92
-	' * Write
-	pushb	65
-	outb
-
-#line	92
-	' * Write
-	pushb	83
-	outb
-
-#line	92
-	' * Write
-	pushb	83
-	outb
-
-#line	92
-	' * Write
-	pushb	10
-	outb
-	jmp label19
-
-#line	91
-
- label18:
-	' * else body
-
-#line	94
-	' * Write
-	pushb	70
-	outb
-
-#line	94
-	' * Write
-	pushb	65
-	outb
-
-#line	94
+#line	5
 	' * Write
 	pushb	73
 	outb
 
-#line	94
+#line	5
 	' * Write
-	pushb	76
+	pushb	79
 	outb
 
-#line	94
+#line	5
+	' * Write
+	pushb	83
+	outb
+
+#line	5
 	' * Write
 	pushb	10
 	outb
 
-#line	91
+#line	7
+	' * Return
+	ret	0, 0, 2
+	jmp label1
 
- label19:
-	pushb	42
-	pushi	5
+#line	4
 
-#line	97
-	call	printSeparator
+ label0:
+	' * else body
 
-#line	98
-	' * Assignment
-	push	bp
-	pushi	-2
-	addi
-	push	bp
-	pushi	-2
-	addi
-	loadi
-	pushi	1
-	addi
-	storei
-	jmp label16
+#line	4
 
-#line	81
+ label1:
 
- label17:
-
-#line	102
+#line	11
 	' * Write
-	pushb	77
+	pushb	70
 	outb
 
-#line	102
+#line	11
+	' * Write
+	pushb	73
+	outb
+
+#line	11
+	' * Write
+	pushb	78
+	outb
+
+#line	11
 	' * Write
 	pushb	65
 	outb
 
-#line	102
+#line	11
 	' * Write
-	pushb	84
+	pushb	76
 	outb
 
-#line	102
-	' * Write
-	pushb	72
-	outb
-
-#line	102
+#line	11
 	' * Write
 	pushb	10
 	outb
+	ret	0, 0, 2
 
-#line	103
-	' * Assignment
-	push	bp
-	pushi	-9
-	addi
-	pushb	48
-	storeb
+#line	14
 
-#line	106
+ main:
+	' * Parameters
+	' * Local variables
+	enter	0
+
+#line	15
 	' * Write
-	pushi	5
-	pushi	-1
-	muli
-	pushi	2
-	muli
-	pushi	10
-	addi
-	outi
+	pushb	80
+	outb
 
-#line	106
+#line	15
+	' * Write
+	pushb	82
+	outb
+
+#line	15
+	' * Write
+	pushb	85
+	outb
+
+#line	15
+	' * Write
+	pushb	69
+	outb
+
+#line	15
+	' * Write
+	pushb	66
+	outb
+
+#line	15
+	' * Write
+	pushb	65
+	outb
+
+#line	15
 	' * Write
 	pushb	32
 	outb
 
-#line	106
+#line	15
 	' * Write
-	push	bp
-	pushi	-9
-	addi
-	loadb
-	b2i
-	pushi	5
-	addi
-	outi
+	pushb	49
+	outb
 
-#line	106
+#line	15
+	' * Write
+	pushb	10
+	outb
+	pushi	1
+
+#line	17
+	call	testReturnVacio
+
+#line	19
+	' * Write
+	pushb	10
+	outb
+
+#line	19
+	' * Write
+	pushb	80
+	outb
+
+#line	19
+	' * Write
+	pushb	82
+	outb
+
+#line	19
+	' * Write
+	pushb	85
+	outb
+
+#line	19
+	' * Write
+	pushb	69
+	outb
+
+#line	19
+	' * Write
+	pushb	66
+	outb
+
+#line	19
+	' * Write
+	pushb	65
+	outb
+
+#line	19
 	' * Write
 	pushb	32
 	outb
 
-#line	106
+#line	19
 	' * Write
-	pushf	10.5
-	f2i
-	pushi	3
-	modi
-	outi
+	pushb	50
+	outb
 
-#line	106
+#line	19
 	' * Write
 	pushb	10
 	outb
-	ret	0, 11, 0
+	pushi	0
+
+#line	21
+	call	testReturnVacio
+	ret	0, 0, 0
