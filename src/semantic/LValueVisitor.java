@@ -1,8 +1,11 @@
 package semantic;
 
 import ast.expression.*;
-import ast.expression.binaryOperation.*;
-import ast.expression.unaryOperation.*;
+import ast.expression.binaryOperation.Arithmetic;
+import ast.expression.binaryOperation.Comparison;
+import ast.expression.binaryOperation.Logic;
+import ast.expression.unaryOperation.UnaryMinus;
+import ast.expression.unaryOperation.UnaryNot;
 import ast.statement.Assignment;
 import ast.statement.Input;
 import ast.type.ErrorType;
@@ -14,6 +17,7 @@ public class LValueVisitor extends AbstractVisitor<Void,Void> {
     public Void visit(Assignment e, Void param) {
         e.getLeft().accept(this,param);
         e.getRigth().accept(this,param);
+        e.setLValue(false);
         if(!e.getLeft().getLValue()){
             new ErrorType("The left side of an assignment must be an lvalue", e.getLeft());
         }

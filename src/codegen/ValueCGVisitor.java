@@ -6,6 +6,7 @@ import ast.expression.binaryOperation.Comparison;
 import ast.expression.binaryOperation.Logic;
 import ast.expression.unaryOperation.UnaryMinus;
 import ast.expression.unaryOperation.UnaryNot;
+import ast.statement.Assignment;
 import ast.type.FunctionType;
 import ast.type.IntType;
 import ast.type.RecordType;
@@ -167,6 +168,26 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
         }
         cg.line(e.getLine());
         cg.call(e.getFuncName().getName());
+        return null;
+    }
+
+    /**
+     * value [[ Assignment: expression1 -> expression2 expression3]]()=
+     *       address[[expression2]]()
+     *       value[[expression3]]()
+     *       cg.convertTo(expression3.type,expression2.type)
+     *       <store> expression2.type.suffix()
+     *       value[[expression3]]()
+     *       cg.convertTo(expression3.type,expression2.type)
+     */
+    @Override
+    public Void visit(Assignment e, Void param){
+        e.getLeft().accept(this.addressCGVisitor,param);
+        e.getRigth().accept(this,param);
+        cg.convertTo(e.getRigth().getType(), e.getLeft().getType());
+        cg.store(e.getLeft().getType());
+        e.getRigth().accept(this,param);
+        cg.convertTo(e.getRigth().getType(), e.getLeft().getType());
         return null;
     }
 

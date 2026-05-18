@@ -1,4 +1,4 @@
-grammar TSmm;	
+grammar TSmm;
 
 // ----- IMPORTS ------
 
@@ -77,10 +77,11 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
          ;
 
 simpleStatement returns [Statement ast]:
-    e1 = expression '=' e2 = expression
-    { if ($e1.ast != null && $e2.ast != null) $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
-  | invocation
-    { $ast = $invocation.ast; }
+    e1 = expression
+    { $ast = (Statement) $e1.ast; }
+
+    | invocation
+        { $ast = $invocation.ast; }
   ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
@@ -138,6 +139,9 @@ expression returns [Expression ast] locals [List<Expression> params = new ArrayL
 
           | e1 = expression OP = ( '&&' | '||' ) e2 = expression // Logic
             { $ast = new Logic($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $OP.text, $e2.ast); }
+
+          | <assoc=right> e1 = expression '=' e2 = expression
+            { if ($e1.ast != null && $e2.ast != null) $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast); }
           ;
 
 // ----- REGLAS LEXICAS ------
@@ -176,4 +180,3 @@ ONE_LINE_COMMENT: '//' .*? ('\n' | EOF)
 fragment
 MULTI_LINE_COMMENT: '/*' .*? '*/'
                   ;
-

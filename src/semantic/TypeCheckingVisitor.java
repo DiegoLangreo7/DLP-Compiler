@@ -123,6 +123,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         e.getLeft().accept(this,param);
         e.getRigth().accept(this,param);
         e.getRigth().getType().mustPromotesTo(e.getLeft().getType(), e);
+        e.setType(e.getLeft().getType());
         return null;
     }
 
