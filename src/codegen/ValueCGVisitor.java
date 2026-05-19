@@ -121,11 +121,12 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
 
     /**
      * void value[[Comparison: expression1 -> expression2 (> | < | >= | <= | == | !=) expression3]]() =
+     *      Type toConvert = expression1.type.getDominant(expression2.type,expression3.type)
      *      value[[expression2]]()
-     *      cg.convertTo(expression2.type,expression1.type)
+     *      cg.convertTo(expression2.type, toConvert)
      *      value[[expression3]]()
-     *      cg.convertTo(expression3.type,expression1.type)
-     *      cg.comparison(expression1.type, expression1.operator)
+     *      cg.convertTo(expression3.type, toConvert)
+     *      cg.comparison(toConvert, expression1.operator)
      */
     @Override
     public Void visit(Comparison e, Void param){
