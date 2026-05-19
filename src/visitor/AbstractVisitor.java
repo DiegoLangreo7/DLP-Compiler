@@ -13,7 +13,7 @@ import ast.expression.unaryOperation.UnaryNot;
 import ast.statement.*;
 import ast.type.*;
 
-public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
+public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
 
     @Override
     public TR visit(Program e, TP param) {
