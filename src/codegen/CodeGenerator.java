@@ -13,21 +13,6 @@ public class CodeGenerator {
     private int labels = 0;
     private PrintWriter out;
 
-    // en el constructor, inicializa el PrintWriter y luego IOException si PrintWriter(sourceFilename) no lo encontró
-    // los parámetros son String outputFilename y String sourceFilename
-
-    //En cada metodo: out.println("\t...");
-    //                out.flush();
-
-    //call main y halt en una funcion "mainInvocation()"
-
-    // una para varDefinition que haga this.comment()
-    // el comment printea ' * ...
-
-    // el metodo convertTo convierte un tipo origen en un tipo destino.
-    // instanceOf a dolor.
-    // Si el tipo 1 es == al 2, "return;", esto por ejemplo para las condiciones del if, ya sabemos que es valido pero nos la pela que tipo sea, convertTo y si ya era if que no haga nada.
-
     public CodeGenerator(String outputFilename, String sourceFilename){
         try{
             this.out = new PrintWriter(outputFilename);
@@ -39,7 +24,9 @@ public class CodeGenerator {
         this.source(sourceFilename);
     }
 
-    // Control para MAPL
+    // ==========================================
+    //           Debugging info
+    // ==========================================
 
     public void source(String sourceFilename){
         out.println();
@@ -54,7 +41,9 @@ public class CodeGenerator {
         out.flush();
     }
 
-    // Push Instructions
+    // ==========================================
+    //           Push instructions
+    // ==========================================
 
     public void push(Type type, String value) {
         out.println("\tpush"+type.suffix()+"\t"+value);
