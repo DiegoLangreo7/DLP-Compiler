@@ -152,6 +152,18 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     }
 
     @Override
+    public Void visit(SwitchCase e, Type param){
+        e.getExpression().accept(this,param);
+        e.getCases().forEach(c -> c.accept(this,param));
+        for(int i = 0; i<e.getCases().size(); i++){
+            if(i!=e.getCases().size()-1){
+                e.getExpression().getType().comparison(e.getCases().get(i).getToCompare().getType(),e.getCases().get(i));
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(Return e, Type param) {
         e.getReturnValue().accept(this,param);
         e.getReturnValue().getType().mustPromotesTo(param, e);

@@ -77,7 +77,19 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
 
          | e1 = expression '=' e2 = expression ';'
            { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
+
+         | FS = 'switch' '(' expression ')' '{' switchBody '}'
+            {$ast.add(new SwitchCase($FS.getLine(), $FS.getCharPositionInLine()+1, $expression.ast, $switchBody.ast));}
          ;
+
+switchBody returns [List<Case> ast = new ArrayList<Case>()]:
+       ( FSC = 'case'  expression ':' switchStatementBody {$ast.add(new Case($FSC.getLine(), $FSC.getCharPositionInLine()+1, $expression.ast, $switchStatementBody.ast));})+
+       FSD = 'default' ':' switchStatementBody {$ast.add(new Case($FSD.getLine(), $FSC.getCharPositionInLine()+1, null, $switchStatementBody.ast));}
+    ;
+
+switchStatementBody returns [List<Statement> ast = new ArrayList<Statement>()]:
+       ( statement { $ast.addAll($statement.ast); })*
+    ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
       '{' ( statement { $ast.addAll($statement.ast); })* '}'

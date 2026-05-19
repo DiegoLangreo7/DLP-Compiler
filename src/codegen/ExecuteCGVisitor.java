@@ -239,6 +239,78 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     }
 
     /**
+     * execute[[SwitchCase: statement -> expression case*]]()=
+     *      String next = cg.getLabel()
+     *      String end = cg.getLabel()
+     *      for(int i = 0; i<case*.size(); i++){
+     *          if(i==0){
+     *              value[[expression]]()
+     *              value[[case.expression]]
+     *              <jz> next
+     *              execute[[case.get(i)]]()
+     *              <jmp> end
+     *          }
+     *          else if(i==size()-1){
+     *              next <:>
+     *              execute[[case.get(i)]]()
+     *          }
+     *          else{
+     *              next <:>
+     *              next = cg.getLabel()
+     *              value[[expression]]()
+     *              value[[case.expression]]
+     *              <jz> next
+     *              execute[[case.get(i)]]()
+     *              <jmp> end
+     *          }
+     *      }
+     *      end <:>
+     */
+    @Override
+    public Void visit(SwitchCase e, FunctionDefinition param){
+        cg.line(e.getLine());
+        cg.comment("* SwitchCase");
+        String next = cg.getLabel();
+        String end = cg.getLabel();
+        for(int i=0; i<e.getCases().size(); i++){
+            if(i==0){
+                e.getExpression().accept(this.valueCGVisitor,null);
+                e.getCases().get(i).getToCompare().accept(this.valueCGVisitor,null);
+                cg.eq(e.getExpression().getType());
+                cg.jz(next);
+                e.getCases().get(i).accept(this,null);
+                cg.jmp(end);
+            }
+            else if(i==e.getCases().size()-1){
+                cg.labelID(next);
+                e.getCases().get(i).accept(this,null);
+            }
+            else{
+                cg.labelID(next);
+                next = cg.getLabel();
+                e.getExpression().accept(this.valueCGVisitor,null);
+                e.getCases().get(i).getToCompare().accept(this.valueCGVisitor,null);
+                cg.eq(e.getExpression().getType());
+                cg.jz(next);
+                e.getCases().get(i).accept(this,null);
+                cg.jmp(end);
+            }
+        }
+        cg.labelID(end);
+        return null;
+    }
+
+    /**
+     * execute[[Case: case -> expression statement*]]()=
+     *      statement*.forEach(statement -> execute[[statement]]())
+     */
+    @Override
+    public Void visit(Case e, FunctionDefinition param){
+        e.getStatements().forEach(statement -> statement.accept(this,param));
+        return null;
+    }
+
+    /**
      * void execute[[Invocation: statement -> expression1 expression2*]]() =
      *              value[[(Expression) statement]]()
      *              if( expression1.type.returnType != VoidType){

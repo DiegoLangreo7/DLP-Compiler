@@ -36,6 +36,30 @@ public class HasReturnVisitor extends AbstractVisitor<Void, Boolean> {
         return thenHasReturn && elseHasReturn;
     }
 
+
+    @Override
+    public Boolean visit(SwitchCase switchCase, Void param) {
+        switchCase.getExpression().accept(this,param);
+        boolean hasResult = true;
+        for(Case c : switchCase.getCases()){
+            boolean result = c.accept(this,param);
+            hasResult &= result;
+        }
+        return hasResult;
+    }
+
+    @Override
+    public Boolean visit(Case c, Void param) {
+        if(c.getToCompare()!=null)
+            c.getToCompare().accept(this,param);
+        boolean hasResult = false;
+        for(Statement statement : c.getStatements()){
+            boolean result = statement.accept(this,param);
+            hasResult |= result;
+        }
+        return hasResult;
+    }
+
     @Override
     public Boolean visit(Input e, Void param) {
         return false;

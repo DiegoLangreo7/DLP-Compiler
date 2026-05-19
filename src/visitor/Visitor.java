@@ -49,6 +49,8 @@ public interface Visitor <TP,TR> {
     TR visit (Log e, TP param);
     TR visit (Return e, TP param);
     TR visit (While e, TP param);
+    TR visit(SwitchCase switchCase, TP param);
+    TR visit(Case c, TP param);
 
     //Type
     TR visit (ArrayType e, TP param);
