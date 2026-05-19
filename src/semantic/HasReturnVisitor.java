@@ -52,6 +52,16 @@ public class HasReturnVisitor extends AbstractVisitor<Void, Boolean> {
     }
 
     @Override
+    public Boolean visit(Continue e, Void param) {
+        return false;
+    }
+
+    @Override
+    public Boolean visit(Break e, Void param) {
+        return false;
+    }
+
+    @Override
     public Boolean visit(While e, Void param) {
         if (e.getWhileBody() != null) {
             for (Statement statement : e.getWhileBody()) {

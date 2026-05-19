@@ -79,9 +79,18 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
            { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
          ;
 
+bodyControl returns [Statement ast]:
+            FS = 'break' ';'
+            {$ast = new Break($FS.getLine(), $FS.getCharPositionInLine()+1);}
+
+         | FS = 'continue' ';'
+            {$ast = new Continue($FS.getLine(), $FS.getCharPositionInLine()+1);}
+         ;
+
 body returns [List<Statement> ast = new ArrayList<Statement>()]:
-      '{' ( statement { $ast.addAll($statement.ast); })* '}'
+      '{' ( (statement { $ast.addAll($statement.ast); } | bodyControl { $ast.add($bodyControl.ast);} ))* '}'
     | statement { $ast.addAll($statement.ast); }
+    | bodyControl { $ast.add($bodyControl.ast); }
     ;
 
 invocation returns [Invocation ast] locals [List<Expression> params = new ArrayList<Expression>()]:

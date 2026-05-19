@@ -27,6 +27,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
         this.valueCGVisitor.setAddressCGVisitor(this.addressCGVisitor);
     }
 
+    private String whileCondition;
+    private String whileEnd;
+
     /**
      * void execute[[Program: program -> definitions*]]() =
      *      for(Definition d : definitions*)
@@ -183,20 +186,44 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     public Void visit(While e, FunctionDefinition param){
         cg.line(e.getLine());
         cg.comment("* While");
-        String cond = cg.getLabel();
-        String end = cg.getLabel();
+        String auxCond = this.whileCondition;
+        String auxEnd = this.whileEnd;
+        this.whileCondition = cg.getLabel();
+        this.whileEnd = cg.getLabel();
         cg.line(e.getLine());
-        cg.labelID(cond);
+        cg.labelID(whileCondition);
         e.getCondition().accept(this.valueCGVisitor,null);
         cg.convertTo(e.getCondition().getType(), IntType.getInstance());
-        cg.jz(end);
+        cg.jz(whileEnd);
         cg.comment("* While body");
         for(Statement statement : e.getWhileBody()){
             statement.accept(this,param);
         }
-        cg.jmp(cond);
+        cg.jmp(whileCondition);
         cg.line(e.getLine());
-        cg.labelID(end);
+        cg.labelID(whileEnd);
+        this.whileCondition  = auxCond;
+        this.whileEnd = auxEnd;
+        return null;
+    }
+
+    /**
+     * void execute[[Break: statement -> ]]() =
+     *     <jmp> end
+     */
+    @Override
+    public Void visit(Break e,  FunctionDefinition param) {
+        cg.jmp(whileEnd);
+        return null;
+    }
+
+    /**
+     * void execute[[Continue: statement -> ]]() =
+     *     <jmp> condition
+     */
+    @Override
+    public Void visit(Continue e,  FunctionDefinition param) {
+        cg.jmp(whileCondition);
         return null;
     }
 
