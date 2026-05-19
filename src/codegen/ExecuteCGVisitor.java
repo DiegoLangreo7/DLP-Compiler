@@ -247,6 +247,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
      */
     @Override
     public Void visit(Invocation e, FunctionDefinition param){
+        cg.line(e.getLine());
         e.accept(this.valueCGVisitor,null);
         FunctionType functionType = (FunctionType) e.getFuncName().getType();
         if (!(functionType.getReturnType() instanceof VoidType)) {
