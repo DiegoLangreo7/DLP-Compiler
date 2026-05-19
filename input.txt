@@ -1,109 +1,121 @@
-let global_offset: number;
-let database: [3] [
-    let id: int;
-    let active: char;
-    let scores: [2] int;
+// ==========================================
+// VARIABLES GLOBALES (Tipos simples, Arrays y Registros)
+// ==========================================
+
+let maxSimulations: int;
+let baseLatency: number;
+let is5G_NSA: int;
+
+let networkStats: [
+    let packetsSent: int;
+    let packetsDropped: int;
+    let averageJitter: number;
 ];
 
-// Función para calcular potencias (prueba paso de floats y bucles)
-function power(base: number, exp: int): number {
-    let result: number;
-    let i: int;
-    result = 1.0;
-    i = 0;
-    while (i < exp) {
-        result = result * base;
-        i = i + 1;
+let latencyHistory: [10] number;
+
+// ==========================================
+// FUNCIONES DE SOPORTE
+// ==========================================
+
+function calculateLatency(distance: number, signalStrength: int): number {
+    // DECLARACIONES AL PRINCIPIO
+    let latency: number;
+    let interference: number;
+    let base: number;
+
+    // SENTENCIAS LUEGO
+    base = 10.0;
+
+    // Promoción de tipos y casting
+    interference = ((100 - signalStrength) as number) * 0.5;
+
+    if (is5G_NSA == 1) {
+        // Simulación 5G NSA
+        latency = baseLatency + (distance * 0.1) + interference;
+    } else {
+        // Simulación 4G LTE (doble latencia base)
+        latency = (baseLatency * 2.0) + (distance * 0.2) + interference;
     }
-    return result;
+
+    return latency;
 }
 
-// Función para comprobar si un número es primo (prueba booleanos int, modulos y retornos tempranos simulados)
-function isPrime(n: int): int {
-    let i: int;
-    let is_prime: int;
-    is_prime = 1;
+function simulatePing(index: int, distance: number, strength: int): void {
+    let currentLat: number;
+    let dropChance: int;
 
-    if (n <= 1)
-        is_prime = 0;
-    else {
-        i = 2;
-        while (i * i <= n && is_prime == 1) {
-            if (n % i == 0)
-                is_prime = 0;
-            i = i + 1;
-        }
+    // Llamada a función como expresión
+    currentLat = calculateLatency(distance, strength);
+
+    // Operador módulo
+    dropChance = strength % 10;
+
+    networkStats.packetsSent = networkStats.packetsSent + 1;
+
+    // Condicionales lógicos complejos
+    if (dropChance < 2 && strength < 50) {
+        networkStats.packetsDropped = networkStats.packetsDropped + 1;
+        latencyHistory[index] = 999.9;
+        log 'D', 'r', 'o', 'p', 'p', 'e', 'd', '\n';
+    } else {
+        latencyHistory[index] = currentLat;
+        log 'P', 'i', 'n', 'g', ':', currentLat, '\n';
     }
-    return is_prime;
 }
 
-// Procedimiento para imprimir un separador decorativo
-function printSeparator(c: char, length: int): void {
-    let i: int;
-    i = 0;
-    while (i < length) {
-        log c;
-        i = i + 1;
-    }
-    log '\n';
-}
+// ==========================================
+// FUNCIÓN PRINCIPAL
+// ==========================================
 
 function main(): void {
-    let i, j: int;
-    let tempScore: number;
-    let testChar: char;
-    let global_offset: int; // SHADOWING: Oculta la global de tipo number
+    // 1. ZONA DE DECLARACIONES
+    let i, tempStr, validPackets: int;
+    let totalLat: number;
 
-    global_offset = 100;
+    // 2. ZONA DE INICIALIZACIONES (Sentencias)
+    maxSimulations = 10;
+    baseLatency = 15.5;
+    is5G_NSA = 1; // 1 = 5G NSA, 0 = 4G LTE
 
-    // 1. Inicialización de la base de datos
+    networkStats.packetsSent = 0;
+    networkStats.packetsDropped = 0;
+    networkStats.averageJitter = 0.0;
+
+    log 'T', 'e', 'l', 'e', 'm', 'e', 't', 'r', 'y', '\n';
+
     i = 0;
-    while (i < 3) {
-        database[i].id = i + global_offset;
+    totalLat = 0.0;
+    tempStr = 85; // Fuerza de señal inicial
 
-        if (isPrime(database[i].id))
-            database[i].active = 'Y';
-        else
-            database[i].active = 'N';
+    // 3. BUCLE PRINCIPAL DE SIMULACIÓN
+    while (i < maxSimulations) {
+        // Llamada a procedimiento (como sentencia)
+        simulatePing(i, 50.0, tempStr);
 
-        j = 0;
-        while (j < 2) {
-            database[i].scores[j] = (database[i].id - 90) * (j + 1) * 5;
-            j = j + 1;
+        if (latencyHistory[i] != 999.9) {
+            totalLat = totalLat + latencyHistory[i];
         }
+
+        // Empeoramos la señal progresivamente
+        tempStr = tempStr - 12;
+
+        if (tempStr < 0) {
+            tempStr = 100; // Reset si la señal cae demasiado
+        }
+
         i = i + 1;
     }
 
-    printSeparator('-', 15);
+    // 4. CÁLCULO FINAL DE ESTADÍSTICAS
+    validPackets = networkStats.packetsSent - networkStats.packetsDropped;
 
-    // 2. Procesamiento y lógicas de casting
-    i = 0;
-    while (i < 3) {
-        log 'I', 'D', ':', database[i].id, ' ', 'A', 'c', 't', ':', database[i].active, '\n';
-
-        tempScore = (database[i].scores[0] as number) + (database[i].scores[1] as number);
-        tempScore = tempScore / 2.0;
-
-        log 'A', 'v', 'g', ':', tempScore, '\n';
-        log 'P', 'W', 'R', ':', power(tempScore, 2), '\n';
-
-        // Criterio de pase: Media > 80 y Activo == 'Y' (89 en ASCII)
-        if (!(tempScore <= 80.0) && database[i].active == 'Y') {
-            log 'P', 'A', 'S', 'S', '\n';
-        } else {
-            log 'F', 'A', 'I', 'L', '\n';
-        }
-
-        printSeparator('*', 5);
-        i = i + 1;
+    if (validPackets > 0) {
+         networkStats.averageJitter = totalLat / (validPackets as number);
     }
 
-    // 3. Pruebas de fuego matemáticas al vuelo
-    log 'M', 'A', 'T', 'H', '\n';
-    testChar = '0'; // ASCII 48
-
-    // Debería imprimir: 0 53 1
-    log -5 * 2 + 10, ' ',
-        (testChar as int) + 5, ' ',
-        (10.5 as int) % 3, '\n';
+    log '\n', '-', '-', '-', '\n';
+    log 'S', 'e', 'n', 't', ':', networkStats.packetsSent, '\n';
+    log 'D', 'r', 'o', 'p', 's', ':', networkStats.packetsDropped, '\n';
+    log 'A', 'v', 'g', 'L', 'a', 't', ':', networkStats.averageJitter, '\n';
 }

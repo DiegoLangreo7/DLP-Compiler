@@ -59,9 +59,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
      *     ID <:>
      *     for(VarDef param : type.params)
      *         execute[[param]]()
+     *     <enter> definition.localBytesSum
      *     for(VarDef local : varDef*)
      *         execute[[local]]()
-     *     <enter> definition.localBytesSum
      *     for(VarDef s : statement*)
      *         execute[[s]]()
      *     <ret> type.returnValue.getNumberOfBytes, definition.localBytesSum, definition.paramBytesSum
@@ -76,12 +76,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
         for (int i = params.size() - 1; i >= 0; i--) {
             params.get(i).accept(this, null);
         }
+        cg.enter(e.getLocalBytesSum());
         cg.comment("* Local variables");
         for(Statement funcLine : e.getFuncBody()){
             if(funcLine instanceof VariableDefinition)
                 funcLine.accept(this,null);
         }
-        cg.enter(e.getLocalBytesSum());
         for(Statement funcLine : e.getFuncBody()){
             if(!(funcLine instanceof VariableDefinition))
                 funcLine.accept(this,e);
