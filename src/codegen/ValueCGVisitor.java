@@ -129,11 +129,12 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void,Void> {
      */
     @Override
     public Void visit(Comparison e, Void param){
+        Type toConvert = e.getType().getDominantType(e.getLeft().getType(),e.getRight().getType(),e);
         e.getLeft().accept(this, param);
-        cg.convertTo(e.getLeft().getType(), e.getType());
+        cg.convertTo(e.getLeft().getType(), toConvert);
         e.getRight().accept(this, param);
-        cg.convertTo(e.getRight().getType(), e.getType());
-        cg.comparison(e.getType(), e.getOperator());
+        cg.convertTo(e.getRight().getType(), toConvert);
+        cg.comparison(toConvert, e.getOperator());
         return null;
     }
 

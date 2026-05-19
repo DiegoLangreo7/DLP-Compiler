@@ -20,6 +20,7 @@ public interface Type extends ASTNode {
     Type parenthesis(List<Type> parameters, Locatable locatable);
     Type canBeCastTo(Type type, Locatable locatable);
     int getNumberOfBytes();
+    Type getDominantType(Type type1, Type type2, Locatable locatable);
     String suffix();
 
 }

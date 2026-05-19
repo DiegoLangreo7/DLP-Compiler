@@ -83,6 +83,13 @@ public class IntType extends AbstractType{
     }
 
     @Override
+    public Type getDominantType(Type type1, Type type2,  Locatable locatable) {
+        if(type1 == NumberType.getInstance() || type2 == NumberType.getInstance())
+            return NumberType.getInstance();
+        return this;
+    }
+
+    @Override
     public int getNumberOfBytes() {
         return 2;
     }

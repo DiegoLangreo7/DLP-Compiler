@@ -83,6 +83,15 @@ public abstract class AbstractType implements Type{
     }
 
     @Override
+    public Type getDominantType(Type type1, Type type2,  Locatable locatable) {
+        if (type1 instanceof ErrorType)
+            return type1;
+        if (type2 instanceof ErrorType)
+            return type2;
+        return new  ErrorType("Types "+type1+" and "+type2+" dont support dominant operation", locatable);
+    }
+
+    @Override
     public int getNumberOfBytes() {
         throw new UnsupportedOperationException("getNumberOfBytes is not supported for type " + this);
     }
