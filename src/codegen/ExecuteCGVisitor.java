@@ -138,6 +138,33 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     }
 
     /**
+     * execute[[CompoundAssignment: statement -> expression1 ('+=' | '-=' | '*=' |'/=' | '%=' | '|=' | '&=') expression2]]()=
+     *      address[[expression1]]()
+     *      value[[expression1]]()
+     *      value[[expression2]]()
+     *      cg.convertTo(expression2.type,expression1.type)
+     *      if(statement.operator.equals('+=')){
+     *          <add> expression1.type.suffix()
+     *      }
+     *      else if(...){
+     *          ...
+     *      }
+     *      <store> expression1.type.suffix();
+     */
+    @Override
+    public Void visit(CompoundAssignment e, FunctionDefinition param) {
+        cg.line(e.getLine());
+        cg.comment("* Compound Assignment");
+        e.getLeft().accept(this.addressCGVisitor,null);
+        e.getLeft().accept(this.valueCGVisitor,null);
+        e.getRigth().accept(this.valueCGVisitor,null);
+        cg.convertTo(e.getRigth().getType(),e.getLeft().getType());
+        cg.compoundAssignmentOperation(e.getLeft().getType(),e.getOperator());
+        cg.store(e.getLeft().getType());
+        return null;
+    }
+
+    /**
      * void execute[[Input: statement -> expression]]() =
      *     address[[expression]]()
      *     <in> expression.type.suffix

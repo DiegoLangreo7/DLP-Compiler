@@ -16,6 +16,11 @@ public class HasReturnVisitor extends AbstractVisitor<Void, Boolean> {
     }
 
     @Override
+    public Boolean visit(CompoundAssignment e, Void param) {
+        return false;
+    }
+
+    @Override
     public Boolean visit(IfElse e, Void param) {
         boolean thenHasReturn = false;
         if (e.getThenBranch() != null) {

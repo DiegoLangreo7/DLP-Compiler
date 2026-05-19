@@ -77,6 +77,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()] locals [Lis
 
          | e1 = expression '=' e2 = expression ';'
            { if ($e1.ast != null && $e2.ast != null) $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast)); }
+
+         | e1 = expression OP = ('+=' | '-=' | '*=' |'/=' | '%=' | '|=' | '&=') e2 = expression ';'
+           { if ($e1.ast != null && $e2.ast != null) $ast.add(new CompoundAssignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast, $OP.text)); }
          ;
 
 body returns [List<Statement> ast = new ArrayList<Statement>()]:

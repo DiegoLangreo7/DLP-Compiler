@@ -127,6 +127,17 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     }
 
     @Override
+    public Void visit(CompoundAssignment e, Type param) {
+        e.getLeft().accept(this,param);
+        e.getRigth().accept(this,param);
+        e.getRigth().getType().mustPromotesTo(e.getLeft().getType(), e);
+        if(e.getOperator().equals("|=") || e.getOperator().equals("&=")) {
+            e.getLeft().getType().logic(e.getRigth().getType(), e);
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(IfElse e, Type param) {
         e.getCondition().accept(this,param);
         for(Statement statement  : e.getElseBranch())

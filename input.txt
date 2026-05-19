@@ -1,109 +1,42 @@
-let global_offset: number;
-let database: [3] [
-    let id: int;
-    let active: char;
-    let scores: [2] int;
-];
-
-// Función para calcular potencias (prueba paso de floats y bucles)
-function power(base: number, exp: int): number {
-    let result: number;
-    let i: int;
-    result = 1.0;
-    i = 0;
-    while (i < exp) {
-        result = result * base;
-        i = i + 1;
-    }
-    return result;
-}
-
-// Función para comprobar si un número es primo (prueba booleanos int, modulos y retornos tempranos simulados)
-function isPrime(n: int): int {
-    let i: int;
-    let is_prime: int;
-    is_prime = 1;
-
-    if (n <= 1)
-        is_prime = 0;
-    else {
-        i = 2;
-        while (i * i <= n && is_prime == 1) {
-            if (n % i == 0)
-                is_prime = 0;
-            i = i + 1;
-        }
-    }
-    return is_prime;
-}
-
-// Procedimiento para imprimir un separador decorativo
-function printSeparator(c: char, length: int): void {
-    let i: int;
-    i = 0;
-    while (i < length) {
-        log c;
-        i = i + 1;
-    }
-    log '\n';
-}
-
 function main(): void {
-    let i, j: int;
-    let tempScore: number;
-    let testChar: char;
-    let global_offset: int; // SHADOWING: Oculta la global de tipo number
+    let x: int;
 
-    global_offset = 100;
+    log 'P', 'R', 'U', 'E', 'B', 'A', 'S', '\n';
 
-    // 1. Inicialización de la base de datos
-    i = 0;
-    while (i < 3) {
-        database[i].id = i + global_offset;
+    // 1. Suma
+    x = 10;
+    x += 5;
+    log '+', '=', ' ', x, '\n'; // Esperado: 15
 
-        if (isPrime(database[i].id))
-            database[i].active = 'Y';
-        else
-            database[i].active = 'N';
+    // 2. Resta
+    x = 10;
+    x -= 3;
+    log '-', '=', ' ', x, '\n'; // Esperado: 7
 
-        j = 0;
-        while (j < 2) {
-            database[i].scores[j] = (database[i].id - 90) * (j + 1) * 5;
-            j = j + 1;
-        }
-        i = i + 1;
-    }
+    // 3. Multiplicación
+    x = 10;
+    x *= 2;
+    log '*', '=', ' ', x, '\n'; // Esperado: 20
 
-    printSeparator('-', 15);
+    // 4. División
+    x = 10;
+    x /= 2;
+    log '/', '=', ' ', x, '\n'; // Esperado: 5
 
-    // 2. Procesamiento y lógicas de casting
-    i = 0;
-    while (i < 3) {
-        log 'I', 'D', ':', database[i].id, ' ', 'A', 'c', 't', ':', database[i].active, '\n';
+    // 5. Módulo (Resto)
+    x = 10;
+    x %= 3;
+    log '%', '=', ' ', x, '\n'; // Esperado: 1
 
-        tempScore = (database[i].scores[0] as number) + (database[i].scores[1] as number);
-        tempScore = tempScore / 2.0;
+    // 6. OR a nivel de bits / Lógico
+    // 1 (binario 01) | 2 (binario 10) = 3 (binario 11)
+    x = 1;
+    x |= 2;
+    log '|', '=', ' ', x, '\n'; // Esperado: 3 o 1 (dependiendo de si tu '|' es bit a bit o puramente lógico)
 
-        log 'A', 'v', 'g', ':', tempScore, '\n';
-        log 'P', 'W', 'R', ':', power(tempScore, 2), '\n';
-
-        // Criterio de pase: Media > 80 y Activo == 'Y' (89 en ASCII)
-        if (!(tempScore <= 80.0) && database[i].active == 'Y') {
-            log 'P', 'A', 'S', 'S', '\n';
-        } else {
-            log 'F', 'A', 'I', 'L', '\n';
-        }
-
-        printSeparator('*', 5);
-        i = i + 1;
-    }
-
-    // 3. Pruebas de fuego matemáticas al vuelo
-    log 'M', 'A', 'T', 'H', '\n';
-    testChar = '0'; // ASCII 48
-
-    // Debería imprimir: 0 53 1
-    log -5 * 2 + 10, ' ',
-        (testChar as int) + 5, ' ',
-        (10.5 as int) % 3, '\n';
+    // 7. AND a nivel de bits / Lógico
+    // 3 (binario 11) & 2 (binario 10) = 2 (binario 10)
+    x = 3;
+    x &= 2;
+    log '&', '=', ' ', x, '\n'; // Esperado: 2 o 1 (dependiendo de tu implementación lógica)
 }

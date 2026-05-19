@@ -43,6 +43,7 @@ public interface Visitor <TP,TR> {
     TR visit (Variable e, TP param);
 
     //Statement
+    TR visit(CompoundAssignment compoundAssignment, TP param);
     TR visit (Assignment e, TP param);
     TR visit (IfElse e, TP param);
     TR visit (Input e, TP param);

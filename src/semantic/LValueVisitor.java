@@ -1,9 +1,13 @@
 package semantic;
 
 import ast.expression.*;
-import ast.expression.binaryOperation.*;
-import ast.expression.unaryOperation.*;
+import ast.expression.binaryOperation.Arithmetic;
+import ast.expression.binaryOperation.Comparison;
+import ast.expression.binaryOperation.Logic;
+import ast.expression.unaryOperation.UnaryMinus;
+import ast.expression.unaryOperation.UnaryNot;
 import ast.statement.Assignment;
+import ast.statement.CompoundAssignment;
 import ast.statement.Input;
 import ast.type.ErrorType;
 import visitor.AbstractVisitor;
@@ -16,6 +20,16 @@ public class LValueVisitor extends AbstractVisitor<Void,Void> {
         e.getRigth().accept(this,param);
         if(!e.getLeft().getLValue()){
             new ErrorType("The left side of an assignment must be an lvalue", e.getLeft());
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(CompoundAssignment e, Void param) {
+        e.getLeft().accept(this,param);
+        e.getRigth().accept(this,param);
+        if(!e.getLeft().getLValue()){
+            new ErrorType("The left side of a compounded assignment must be an lvalue", e.getLeft());
         }
         return null;
     }

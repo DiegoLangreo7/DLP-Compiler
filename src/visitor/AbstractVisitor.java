@@ -13,7 +13,7 @@ import ast.expression.unaryOperation.UnaryNot;
 import ast.statement.*;
 import ast.type.*;
 
-public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
+public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
 
     @Override
     public TR visit(Program e, TP param) {
@@ -114,6 +114,13 @@ public class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
 
     @Override
     public TR visit(Variable e, TP param) {
+        return null;
+    }
+
+    @Override
+    public TR visit(CompoundAssignment e, TP param) {
+        e.getLeft().accept(this,param);
+        e.getRigth().accept(this,param);
         return null;
     }
 

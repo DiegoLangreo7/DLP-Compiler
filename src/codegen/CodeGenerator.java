@@ -414,4 +414,16 @@ public class CodeGenerator {
         out.println("\t' "+text);
         out.flush();
     }
+
+    public void compoundAssignmentOperation(Type type, String operator) {
+        switch (operator) {
+            case "+=": add(type); break;
+            case "-=": sub(type); break;
+            case "*=": mul(type); break;
+            case "/=": div(type); break;
+            case "%=": mod(type); break;
+            case "|=": or(); break;
+            case "&=": and(); break;
+        }
+    }
 }
