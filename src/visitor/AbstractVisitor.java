@@ -33,6 +33,8 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR>{
     @Override
     public TR visit(VariableDefinition e, TP param) {
         e.getType().accept(this,param);
+        if(e.getExpression() != null)
+            e.getExpression().accept(this,param);
         return null;
     }
 

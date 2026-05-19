@@ -76,12 +76,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
         for (int i = params.size() - 1; i >= 0; i--) {
             params.get(i).accept(this, null);
         }
+        cg.enter(e.getLocalBytesSum());
         cg.comment("* Local variables");
         for(Statement funcLine : e.getFuncBody()){
             if(funcLine instanceof VariableDefinition)
                 funcLine.accept(this,null);
         }
-        cg.enter(e.getLocalBytesSum());
         for(Statement funcLine : e.getFuncBody()){
             if(!(funcLine instanceof VariableDefinition))
                 funcLine.accept(this,e);
@@ -110,12 +110,37 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FunctionDefinition,Void>
     }
 
     /**
-     * void execute[[VariableDefinition: definition -> type ID]]() =
+     * void execute[[VariableDefinition: definition -> type expression ID]]() =
      *     ' <*> type.toString ID <(offset> definition.offset <)>
+     *     if (expression != null){
+     *          if(expression.definition.scope == 0)
+     *              <pusha> expression.definition.offset
+     *          else{
+     *              <push bp>
+     *              <pusha> expression.definition.offset
+     *              <addi>
+     *          }
+     *          value[[expression]]
+     *          cg.convertTo(expression.type, definition.type)
+     *          <store> definition.type.suffix()
+     *     }
      */
     @Override
     public Void visit(VariableDefinition e, FunctionDefinition param){
         cg.comment("* " + e.getType() + " " + e.getName() + " (offset " + e.getOffset() + ")");
+        if(e.getExpression()!=null){
+            if(e.getScope()==0){
+                cg.pusha(e.getOffset());
+            }
+            else{
+                cg.pushbp();
+                cg.push(IntType.getInstance(),e.getOffset()+"");
+                cg.add(IntType.getInstance());
+            }
+            e.getExpression().accept(this.valueCGVisitor,null);
+            cg.convertTo(e.getExpression().getType(), e.getType());
+            cg.store(e.getType());
+        }
         return null;
     }
 

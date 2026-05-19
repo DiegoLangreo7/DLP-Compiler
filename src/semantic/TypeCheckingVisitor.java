@@ -1,6 +1,7 @@
 package semantic;
 
 import ast.definition.FunctionDefinition;
+import ast.definition.VariableDefinition;
 import ast.expression.*;
 import ast.expression.binaryOperation.Arithmetic;
 import ast.expression.binaryOperation.Comparison;
@@ -20,6 +21,16 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         e.getType().accept(this,param);
         for(Statement statement : e.getFuncBody())
             statement.accept(this,((FunctionType) e.getType()).getReturnType());
+        return null;
+    }
+
+    @Override
+    public Void visit(VariableDefinition e, Type param) {
+        e.getType().accept(this,param);
+        if(e.getExpression()!=null){
+            e.getExpression().accept(this,param);
+            e.getExpression().getType().mustPromotesTo(e.getType(),e);
+        }
         return null;
     }
 

@@ -7,7 +7,6 @@ import ast.statement.Statement;
 import ast.type.ErrorType;
 import ast.type.RecordField;
 import ast.type.RecordType;
-import errorhandler.ErrorHandler;
 import symboltable.SymbolTable;
 import visitor.AbstractVisitor;
 
@@ -34,6 +33,9 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
     @Override
     public Void visit(VariableDefinition e, Void param) {
         e.getType().accept(this,param);
+        if(e.getExpression()!=null){
+            e.getExpression().accept(this,param);
+        }
         if(!st.insert(e)){
             new ErrorType("Variable '" + e.getName() + "' is already defined", e);
         }

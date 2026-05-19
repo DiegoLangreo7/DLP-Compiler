@@ -1,5 +1,6 @@
 package ast.definition;
 
+import ast.expression.Expression;
 import ast.statement.Statement;
 import ast.type.Type;
 import visitor.Visitor;
@@ -7,9 +8,15 @@ import visitor.Visitor;
 public class VariableDefinition extends AbstractDefinition implements Statement {
 
     private int offset;
+    private Expression expression;
 
     public VariableDefinition(int line, int column, String name, Type type) {
         super(line, column, name, type);
+    }
+
+    public VariableDefinition(int line, int column, String name, Type type,  Expression expression) {
+        super(line, column, name, type);
+        this.expression = expression;
     }
 
     @Override
@@ -28,6 +35,10 @@ public class VariableDefinition extends AbstractDefinition implements Statement 
 
     public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 
 }

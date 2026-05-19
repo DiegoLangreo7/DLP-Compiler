@@ -20,9 +20,16 @@ program returns [Program ast = new Program()] locals [List<Definition> definitio
         { $ast.addDefinitions($definitions); }
        ;
 
-variableDefinition returns [List<VariableDefinition> ast = new ArrayList<VariableDefinition>()] locals [List<String> varNames = new ArrayList<String>()]:
-     FS = 'let' ID1 = ID { $varNames.add($ID1.text); }( ',' IDL = ID { $varNames.add( $IDL.text); })* ':' type ';'
-     { for (String varName : $varNames) { $ast.add(new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, varName, $type.ast)); } }
+variableDefinition returns [List<VariableDefinition> ast = new ArrayList<VariableDefinition>()] locals [List<String> varNames = new ArrayList<String>(), List<Expression> inits = new ArrayList<Expression>()]:
+     FS = 'let' ID1 = ID { $varNames.add($ID1.text); } '=' e1 = expression {$inits.add($e1.ast);}
+     ( ',' IDL = ID { $varNames.add( $IDL.text); } '=' el = expression {$inits.add($el.ast);} )* ':' type ';'
+     {
+        for(int i = 0; i<$varNames.size(); i++){
+            $ast.add(new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, $varNames.get(i), $type.ast, $inits.get(i)));
+        }
+     }
+     | FS = 'let' ID1 = ID { $varNames.add($ID1.text); }( ',' IDL = ID { $varNames.add( $IDL.text); })* ':' type ';'
+            { for (String varName : $varNames) { $ast.add(new VariableDefinition($FS.getLine(), $FS.getCharPositionInLine()+1, varName, $type.ast)); } }
     ;
 
 functionDefinition returns [FunctionDefinition ast] locals [List<VariableDefinition> params = new ArrayList<VariableDefinition>(), List<Statement> funcBody = new ArrayList<Statement>(), Type returnType]:
